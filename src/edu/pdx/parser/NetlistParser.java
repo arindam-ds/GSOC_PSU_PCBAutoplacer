@@ -19,7 +19,7 @@ public class NetlistParser {
       FileInputStream fstream = new FileInputStream(netlistInputFile);
 	  BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
       while ((strLine = br.readLine()) != null) {
-	    if (strLine.contains("comp ")){
+        if (strLine.contains("comp ")){
           numberOfComponents++;
           start = strLine.indexOf("ref ") + 4;
           end = start;
@@ -47,7 +47,7 @@ public class NetlistParser {
           }//if contains part
         }	//if contains comp
 
-		if (strLine.contains("libpart ")) {
+        if (strLine.contains("libpart ")) {
           start = strLine.indexOf("(part ") + 6;
           end = start;
           for (final char c : strLine.substring(start).toCharArray()) {
@@ -96,9 +96,9 @@ public class NetlistParser {
        }//end of while ((strLine = br.readLine()) != null)
        //Close the input stream
        br.close();			
-	   /*testing
-	   System.out.println (numberOfComponents);
-	   for(int j=0;j<compList.size();j++)
+       /*testing
+       System.out.println (numberOfComponents);
+       for(int j=0;j<compList.size();j++)
          System.out.println(compList.get(j).nameOfComp+" "+compList.get(j).nameOfCompPart+" "+compList.get(j).numOfPin);
 			
        for(int j=0;j<netList.size();j++)
