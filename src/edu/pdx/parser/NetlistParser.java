@@ -15,8 +15,8 @@ public class NetlistParser {
     }
     public void parse()
     {
-		try {
-			FileInputStream fstream = new FileInputStream(netlistInputFile);
+        try {
+            FileInputStream fstream = new FileInputStream(netlistInputFile);
 			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 			while ((strLine = br.readLine()) != null) {
 				/*if(DEBUG==1) {
@@ -134,6 +134,14 @@ public class NetlistParser {
 
 				//Close the input stream
 				br.close();			
+				/*testing
+				System.out.println (numberOfComponents);
+				for(int j=0;j<compList.size();j++)
+					System.out.println(compList.get(j).nameOfComp+" "+compList.get(j).nameOfCompPart+" "+compList.get(j).numOfPin);
+			
+				for(int j=0;j<netList.size();j++)
+					System.out.println(netList.get(j).netId+" "+netList.get(j).compName+" "+netList.get(j).pin);
+				*/
 		} catch (Exception e) {
 			System.err.println("Error: " + e.getMessage());
 		}
