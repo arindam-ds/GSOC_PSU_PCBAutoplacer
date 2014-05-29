@@ -17,7 +17,7 @@ public class NetlistParser {
   public void parse() {
     try {
       FileInputStream fstream = new FileInputStream(netlistInputFile);
-	  BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+      BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
       while ((strLine = br.readLine()) != null) {
         if (strLine.contains("comp ")){
           numberOfComponents++;
@@ -25,9 +25,9 @@ public class NetlistParser {
           end = start;
           for (final char c : strLine.substring(start).toCharArray()) {
             if (c == ')') {
-		      break;
+              break;
             }
-		    ++end;
+            ++end;
           }				
           compName = strLine.substring(start, end);
           for (int i=0;i<2;i++)
