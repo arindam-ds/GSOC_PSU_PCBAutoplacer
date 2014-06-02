@@ -96,14 +96,14 @@ public class NetlistParser {
        }//end of while ((strLine = br.readLine()) != null)
        //Close the input stream
        br.close();			
-       /*testing
+       //testing
        System.out.println (numberOfComponents);
        for(int j=0;j<compList.size();j++)
          System.out.println(compList.get(j).nameOfComp+" "+compList.get(j).nameOfCompPart+" "+compList.get(j).numOfPin);
-			
+	   System.out.println("NetList");
        for(int j=0;j<netList.size();j++)
          System.out.println(netList.get(j).netId+" "+netList.get(j).compName+" "+netList.get(j).pin);
-       */
+       
     } catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
       }
