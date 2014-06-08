@@ -1,5 +1,7 @@
 package edu.pdx.pcbparser;
 
+import java.util.*;
+
 public class PcbModules {
   
   int moduleId;
@@ -12,5 +14,5 @@ public class PcbModules {
   //String moduleNameValue;//future use
   float componentWidth;
   float componentHeight;
-  
+  List<Pads> pad;
 }

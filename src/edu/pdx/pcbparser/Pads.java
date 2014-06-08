@@ -7,5 +7,7 @@ public class Pads {
   float padX;
   float padY;
   int angleZ;
+  float sizeX;
+  float sizeY;
   PcbNets net;
 }
