@@ -6,7 +6,7 @@ public class Pads {
   boolean isCircle;
   float padX;
   float padY;
-  int angleZ;
+  int padAngleZ;
   float sizeX;
   float sizeY;
   PcbNets net;
