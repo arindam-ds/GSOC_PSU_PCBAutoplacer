@@ -12,7 +12,7 @@ public class PcbParser {
 	private List<PcbModules> moduleList = new ArrayList<PcbModules>();
 	private int layerId=0, numberOfNets=0, netId=0, moduleId=0, angleZ=0, numIndex=0;
 	private float positionX=0.00f, positionY=0.00f, componentWidth=0.00f,componentHeight=0.00f;
-	private float heightStartX=0.00f, heightStartY=0.00f, heightEndX=0.00f, heightEndY=0.00f;
+	private float heightMin=999.99f, heightMax=0.00f, widthMin=999.99f, widthMax=0.00f;
 	private boolean isLayer = true, isNets = true;
 	BufferedReader br;
 	FileInputStream fstream;
@@ -92,6 +92,8 @@ public class PcbParser {
 	public void getModules(){
       try {
         PcbModules modules = new PcbModules();
+        List<Float> widths = new ArrayList<Float>();
+        List<Float> heights = new ArrayList<Float>();
         modules.moduleId = moduleId;
         moduleId++;
         modules.moduleType = getSubstring("(module ",' ',8);
@@ -103,6 +105,7 @@ public class PcbParser {
 		if(coords.length==3)
           modules.angleZ = Integer.parseInt(coords[2]);
 		while(true){
+		  String[] position;
           strLine = br.readLine();
           if(strLine.contains("fp_text reference")){
             modules.moduleName = getSubstring("reference ",' ', 10);
@@ -111,9 +114,46 @@ public class PcbParser {
             modules.moduleNameValue = getSubstring("value ",' ', 6);
           }*/ //future use
           if(strLine.contains("fp_line")){
-            modules.moduleName = getSubstring("(start ",')', 7);
+            position = getSubstring("(start ",')', 7).split(" ");
+            widths.add(Float.parseFloat(position[0]));
+            heights.add(Float.parseFloat(position[1]));
+            position = getSubstring("(end ",')', 5).split(" ");
+            widths.add(Float.parseFloat(position[0]));
+            heights.add(Float.parseFloat(position[1]));
+            /*if(Float.parseFloat(position[0])<widthMin){
+              widthMin = Float.parseFloat(position[0]); 
+            }
+            if(Float.parseFloat(position[0])>widthMax){
+              widthMax = Float.parseFloat(position[0]); 
+            }
+            if(Float.parseFloat(position[1])<heightMin){
+              heightMin = Float.parseFloat(position[1]); 
+            }
+            if(Float.parseFloat(position[1])>heightMax){
+              heightMax = Float.parseFloat(position[1]); 
+            }
+            position = getSubstring("(end ",')', 5).split(" ");
+            if(Float.parseFloat(position[0])<widthMin){
+              widthMin = Float.parseFloat(position[0]); 
+            }
+            if(Float.parseFloat(position[0])>widthMax){
+              widthMax = Float.parseFloat(position[0]); 
+            }
+            if(Float.parseFloat(position[1])<heightMin){
+              heightMin = Float.parseFloat(position[1]); 
+            }
+            if(Float.parseFloat(position[1])>heightMax){
+              heightMax = Float.parseFloat(position[1]); 
+            }*/
           }
-          
+          if(strLine.contains("fp_circle")){
+            position = getSubstring("(end ",')', 5).split(" ");
+            widths.add(Float.parseFloat(position[0]));
+            heights.add(Float.parseFloat(position[1]));
+          }
+          if(strLine.contains("pad")){
+            break;
+          }
 		}//end while(true)
 	  } catch (Exception e) {
 		e.printStackTrace();
