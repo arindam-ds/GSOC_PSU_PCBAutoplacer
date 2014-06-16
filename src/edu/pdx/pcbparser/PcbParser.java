@@ -44,8 +44,8 @@ public class PcbParser {
         }
         br.close();
         //testing
-        for(int j=0;j<netList.size();j++)
-            System.out.println(netList.get(j).netId+" "+netList.get(j).netName+" "+"\n");
+        for(int j=0;j<moduleList.size();j++)
+            System.out.println(moduleList.get(j).moduleId+" "+moduleList.get(j).moduleName+" "+moduleList.get(j).angleZ+" "+moduleList.get(j).componentWidth+" "+moduleList.get(j).componentHeight+" "+"\n");
         //System.out.println("numberOfNets  ::"+numberOfNets);
       }
       catch (Exception e){
@@ -155,6 +155,21 @@ public class PcbParser {
             break;
           }
 		}//end while(true)
+		Collections.sort(widths);
+		Collections.sort(heights);
+		//System.out.println("Max: "+widths.get(widths.size()-1));   // Last element
+	    //System.out.println("Min: "+widths.get(0));
+		if(widths.get(widths.size()-1) == widths.get(0)){
+          modules.componentWidth = widths.get(0);
+		}
+		else
+		  modules.componentWidth = widths.get(widths.size()-1) - widths.get(0);
+		if(widths.get(heights.size()-1) == heights.get(0)){
+          modules.componentHeight = heights.get(0);
+        }
+        else
+          modules.componentHeight = heights.get(heights.size()-1) - heights.get(0);		
+		moduleList.add(modules);
 	  } catch (Exception e) {
 		e.printStackTrace();
 	  }
