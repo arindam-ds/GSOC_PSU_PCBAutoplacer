@@ -10,9 +10,9 @@ public class PcbParser {
 	private List<PcbLayers> layerList = new ArrayList<PcbLayers>();
 	private List<PcbNets> netList = new ArrayList<PcbNets>();
 	private List<PcbModules> moduleList = new ArrayList<PcbModules>();
-	private int layerId=0, numberOfNets=0, netId=0, moduleId=0, angleZ=0, numIndex=0;
-	private float positionX=0.00f, positionY=0.00f, componentWidth=0.00f,componentHeight=0.00f;
-	private float heightMin=999.99f, heightMax=0.00f, widthMin=999.99f, widthMax=0.00f;
+	private int layerId=0, numberOfNets=0, netId=0, moduleId=0, angleZ=0, numIndex=0, padAngleZ=0, padId=0;
+	private float positionX=0.00f, positionY=0.00f, componentWidth=0.00f,componentHeight=0.00f, padX=0.00f, padY=0.00f,padWidth=0.00f, padHeight=0.00f;
+	//private float heightMin=999.99f, heightMax=0.00f, widthMin=999.99f, widthMax=0.00f;
 	private boolean isLayer = true, isNets = true;
 	BufferedReader br;
 	FileInputStream fstream;
@@ -94,12 +94,15 @@ public class PcbParser {
         PcbModules modules = new PcbModules();
         List<Float> widths = new ArrayList<Float>();
         List<Float> heights = new ArrayList<Float>();
+        Scanner sc;
+        Pads pads;
         modules.moduleId = moduleId;
         moduleId++;
         modules.moduleType = getSubstring("(module ",' ',8);
         modules.moduleLayer = getSubstring("(layer ",')',7); 
 		strLine = br.readLine();
 		String[] coords = getSubstring("(at ", ')', 4).split(" ");
+		String[] padToNet;
 		modules.positionX = Float.parseFloat(coords[0]);
 		modules.positionY = Float.parseFloat(coords[1]);
 		if(coords.length==3)
@@ -120,31 +123,6 @@ public class PcbParser {
             position = getSubstring("(end ",')', 5).split(" ");
             widths.add(Float.parseFloat(position[0]));
             heights.add(Float.parseFloat(position[1]));
-            /*if(Float.parseFloat(position[0])<widthMin){
-              widthMin = Float.parseFloat(position[0]); 
-            }
-            if(Float.parseFloat(position[0])>widthMax){
-              widthMax = Float.parseFloat(position[0]); 
-            }
-            if(Float.parseFloat(position[1])<heightMin){
-              heightMin = Float.parseFloat(position[1]); 
-            }
-            if(Float.parseFloat(position[1])>heightMax){
-              heightMax = Float.parseFloat(position[1]); 
-            }
-            position = getSubstring("(end ",')', 5).split(" ");
-            if(Float.parseFloat(position[0])<widthMin){
-              widthMin = Float.parseFloat(position[0]); 
-            }
-            if(Float.parseFloat(position[0])>widthMax){
-              widthMax = Float.parseFloat(position[0]); 
-            }
-            if(Float.parseFloat(position[1])<heightMin){
-              heightMin = Float.parseFloat(position[1]); 
-            }
-            if(Float.parseFloat(position[1])>heightMax){
-              heightMax = Float.parseFloat(position[1]); 
-            }*/
           }
           if(strLine.contains("fp_circle")){
             position = getSubstring("(end ",')', 5).split(" ");
@@ -152,9 +130,37 @@ public class PcbParser {
             heights.add(Float.parseFloat(position[1]));
           }
           if(strLine.contains("pad")){
-            break;
+        	pads = new Pads();
+            pads.padId = Integer.parseInt(getSubstring("(pad ", ' ', 5));
+            coords = getSubstring("(at ", ')', 4).split(" ");
+            pads.padX = Float.parseFloat(coords[0]);
+    		pads.padY = Float.parseFloat(coords[1]);
+    		if(coords.length==3)
+    			pads.padAngleZ = Integer.parseInt(coords[2]);
+    		coords = getSubstring("(size ", ')', 6).split(" ");
+    		pads.padWidth = Float.parseFloat(coords[0]);
+    		pads.padHeight = Float.parseFloat(coords[1]);
+    		strLine = br.readLine();
+    		strLine = br.readLine();
+    		padToNet = getSubstring("(net ", ')', 5).split(" ");
+    		netId = Integer.parseInt(padToNet[0]);
+    		netName = padToNet[1];
+    		strLine = br.readLine();
+    		//strLine = br.readLine();
+    		sc = new Scanner(br);
+    		if(!sc.next().contains("pad")){
+              sc.close();
+              break;
+    		}
+    		else
+              sc.close();
+    		//PcbNets pcbNets = new PcbNets(netId, netName);
+    		pads.net = new PcbNets(netId, netName);
+    		modules.pad.add(pads);
           }
 		}//end while(true)
+		
+		
 		Collections.sort(widths);
 		Collections.sort(heights);
 		//System.out.println("Max: "+widths.get(widths.size()-1));   // Last element
@@ -171,7 +177,9 @@ public class PcbParser {
           modules.componentHeight = heights.get(heights.size()-1) - heights.get(0);		
 		moduleList.add(modules);
 	  } catch (Exception e) {
-		e.printStackTrace();
+		e.getCause();
+		System.err.println("Error_: " + e.getMessage());
+        e.printStackTrace();
 	  }
     }
 	public String getSubstring(String startIndex, char endChar, int numIndex){
