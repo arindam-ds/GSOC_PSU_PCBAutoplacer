@@ -10,7 +10,7 @@ public class PcbParser {
 	private List<PcbLayers> layerList = new ArrayList<PcbLayers>();
 	private List<PcbNets> netList = new ArrayList<PcbNets>();
 	private List<PcbModules> moduleList = new ArrayList<PcbModules>();
-	private int layerId=0, numberOfNets=0, netId=0, moduleId=0, angleZ=0, numIndex=0, padAngleZ=0, padId=0;
+	private int layerId=0, numberOfNets=0, netId=0, moduleId=0, angleZ=0, numIndex=0, padAngleZ=0, padId=0, READFLAG=1;
 	private float positionX=0.00f, positionY=0.00f, componentWidth=0.00f,componentHeight=0.00f, padX=0.00f, padY=0.00f,padWidth=0.00f, padHeight=0.00f;
 	//private float heightMin=999.99f, heightMax=0.00f, widthMin=999.99f, widthMax=0.00f;
 	private boolean isLayer = true, isNets = true;
@@ -45,7 +45,7 @@ public class PcbParser {
         br.close();
         //testing
         for(int j=0;j<moduleList.size();j++)
-            System.out.println(moduleList.get(j).moduleId+" "+moduleList.get(j).moduleName+" "+moduleList.get(j).angleZ+" "+moduleList.get(j).componentWidth+" "+moduleList.get(j).componentHeight+" "+"\n");
+            System.out.println(moduleList.get(j).moduleId+" "+moduleList.get(j).moduleName+" "+moduleList.get(j).pad.size()+"\n");
         //System.out.println("numberOfNets  ::"+numberOfNets);
       }
       catch (Exception e){
@@ -107,9 +107,11 @@ public class PcbParser {
 		modules.positionY = Float.parseFloat(coords[1]);
 		if(coords.length==3)
           modules.angleZ = Integer.parseInt(coords[2]);
+		modules.pad = new ArrayList<Pads>();
 		while(true){
 		  String[] position;
-          strLine = br.readLine();
+		  if(READFLAG==1)
+            strLine = br.readLine();
           if(strLine.contains("fp_text reference")){
             modules.moduleName = getSubstring("reference ",' ', 10);
           }
@@ -146,21 +148,19 @@ public class PcbParser {
     		netId = Integer.parseInt(padToNet[0]);
     		netName = padToNet[1];
     		strLine = br.readLine();
-    		//strLine = br.readLine();
-    		sc = new Scanner(br);
-    		if(!sc.next().contains("pad")){
-              sc.close();
+    		strLine = br.readLine();
+    		if(!strLine.contains("pad")){
+              pads.net = new PcbNets(netId, netName);
+              modules.pad.add(pads);
               break;
     		}
     		else
-              sc.close();
+              READFLAG=0;
     		//PcbNets pcbNets = new PcbNets(netId, netName);
     		pads.net = new PcbNets(netId, netName);
     		modules.pad.add(pads);
           }
-		}//end while(true)
-		
-		
+		}//end while(true)		
 		Collections.sort(widths);
 		Collections.sort(heights);
 		//System.out.println("Max: "+widths.get(widths.size()-1));   // Last element
@@ -176,6 +176,7 @@ public class PcbParser {
         else
           modules.componentHeight = heights.get(heights.size()-1) - heights.get(0);		
 		moduleList.add(modules);
+		READFLAG=1;
 	  } catch (Exception e) {
 		e.getCause();
 		System.err.println("Error_: " + e.getMessage());
