@@ -4,16 +4,18 @@ import java.io.*;
 import java.util.*;
 
 public class PcbParser {
-  private String pcbInputFile, strLine="", layerName="", layerType="", netName="", moduleType="", moduleLayer="",moduleName="";
-  private String startIndex="";
-  private char endChar='a';
-  private List<PcbLayers> layerList = new ArrayList<PcbLayers>();
-  private List<PcbNets> netList = new ArrayList<PcbNets>();
-  private List<PcbModules> moduleList = new ArrayList<PcbModules>();
-  private int layerId=0, numberOfNets=0, netId=0, moduleId=0, angleZ=0, numIndex=0, padAngleZ=0, padId=0, READFLAG=1;
-  private float positionX=0.00f, positionY=0.00f, componentWidth=0.00f,componentHeight=0.00f, padX=0.00f, padY=0.00f,padWidth=0.00f, padHeight=0.00f;
-  //private float heightMin=999.99f, heightMax=0.00f, widthMin=999.99f, widthMax=0.00f;
-  private boolean isLayer = true, isNets = true;
+  String pcbInputFile, strLine="", layerName="", layerType="", netName="", moduleType="", moduleLayer="",moduleName="";
+  String startIndex="";
+  char endChar='a';
+  List<PcbLayers> layerList = new ArrayList<PcbLayers>();
+  List<PcbNets> netList = new ArrayList<PcbNets>();
+  List<PcbModules> moduleList = new ArrayList<PcbModules>();
+  List<Float> dimensionX = new ArrayList<Float>(); 
+  List<Float> dimensionY = new ArrayList<Float>();
+  int layerId=0, numberOfNets=0, netId=0, moduleId=0, angleZ=0, numIndex=0, padAngleZ=0, padId=0, READFLAG=1;
+  float positionX=0.00f, positionY=0.00f, componentWidth=0.00f,componentHeight=0.00f, padX=0.00f, padY=0.00f,padWidth=0.00f, padHeight=0.00f;
+  float pcbBoardX1, pcbBoardX2, pcbBoardY1, pcbBoardY2;
+  boolean isLayer = true, isNets = true;
   BufferedReader br;
   FileInputStream fstream;
   public PcbParser(String pcbInputFile) {
@@ -40,14 +42,18 @@ public class PcbParser {
         if (strLine.contains("(module ")){
           getModules();         
         }
+        if (strLine.contains("(gr_line ")){
+          getDimensions(); 
+          getPcbDimensions();
+        }
       }
       br.close();
       //testing
       for(int j=0;j<moduleList.size();j++)
         System.out.println(moduleList.get(j).moduleId+" "+moduleList.get(j).moduleName+" "+moduleList.get(j).pad.size()+"\n");
         //System.out.println("numberOfNets  ::"+numberOfNets);
-      }
-      catch (Exception e){
+      System.out.println("pcbBoardX1: "+pcbBoardX1+" "+pcbBoardX2+" "+pcbBoardY1+" "+pcbBoardY2);
+      }catch (Exception e){
     	System.err.println("Error: " + e.getMessage());
       }
 	}
@@ -67,7 +73,7 @@ public class PcbParser {
       }catch (Exception e) {
         e.printStackTrace();
       }
-	}//for loop
+    }//for loop
   }
   public void getNets(){
     isNets = false;
@@ -91,7 +97,6 @@ public class PcbParser {
       PcbModules modules = new PcbModules();
       List<Float> widths = new ArrayList<Float>();
       List<Float> heights = new ArrayList<Float>();
-      Scanner sc;
       Pads pads;
       modules.moduleId = moduleId;
       moduleId++;
@@ -179,6 +184,28 @@ public class PcbParser {
       System.err.println("Error_: " + e.getMessage());
       e.printStackTrace();
 	}
+  }
+  public void getDimensions(){
+    try{
+      String[] coord;
+      coord = getSubstring("(start ", ')', 7).split(" ");
+      dimensionX.add(Float.parseFloat(coord[0]));
+      dimensionY.add(Float.parseFloat(coord[1]));
+      coord = getSubstring("(end ", ')', 5).split(" ");
+      dimensionX.add(Float.parseFloat(coord[0]));
+      dimensionY.add(Float.parseFloat(coord[1]));
+    }catch (Exception e){
+      System.err.println("Error_: " + e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  public void getPcbDimensions(){
+    Collections.sort(dimensionX);
+    Collections.sort(dimensionY);
+    pcbBoardX1 = dimensionX.get(0);
+    pcbBoardX2 = dimensionX.get(dimensionX.size()-1);
+    pcbBoardY1 = dimensionY.get(0);
+    pcbBoardY2 = dimensionY.get(dimensionY.size()-1);
   }
   public String getSubstring(String startIndex, char endChar, int numIndex){
     int start = strLine.indexOf(startIndex) + numIndex;
