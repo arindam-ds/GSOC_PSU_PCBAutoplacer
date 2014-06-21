@@ -1,0 +1,71 @@
+Problem Formulation:
+===================================================
+Introduction:
+The aim of this project is to develop a routibility-driven placer for autoplacing PCB components considering optimization of routability. Once the circuit design is made by PCB design tool, the design file would be imported to the placer for autoplacing the components. The final output file would be exported to the PCB tool again for further designing. This placer would be integrated with KiCAD software suite for autoplcaing the components in PCB design.
+
+The netlist and PCB file comprise of the description of the chip details such as number of gates, nets, dimensions, pads and connectivity information. Various placement requirements and constraints would be taken into account. Placement requirements include minimizing the wirelength, signal delay and congestion. 
+
+Design Goals
+    The program would be developed in Java. The initial target of the placement is to implement a basic recursive mincut algorithm that can place all gates in legal positions on board. Once the basic optimized placement is done, it would provide flexibility to add other features, by fine tuning all the different optimization parameters.
+
+Optimizations
+    Once the initial requirements are satisfied, the PCB placer would place the circuit components by generating partitions that yield a placement satisfying the specific cost parameters.
+
+    PCB boards are not homogenous bunch of components and nets but are definitely partitioned into sections, having different shapes and sizes, all connected by nets. A partitioning approach that considers such structure would be more capable of returning an optimal placement with least congestion. Identifying this optimal placement is an NP-Hard problem. It is possible to use heuristic techniques and tradeoffs to achieve a good placement result. The key is to have some way of extracting the position and direction of components so that final result contains compact placement but enough white space for smooth routing.
+
+
+Data Structures
+====================================================
+  This section describes the data structures utilized in Placer program.The basic structures which hold data for the components comprising the placement task are shown below:
+
+Components
+The data structure for components holds the information about each circuit component on the PCB board:
+
+        nameOfComp : name of components as given in Netlist
+        nameOfCompPart: name of the component's part
+        numOfPin: number of pins in each component  
+
+Nets
+The data structure for nets holds the following information:
+
+        netId: distinct Id of each net
+        compName: Name of component connected to this net
+        pin: pin number of the component connected to this net
+
+Pads
+The data structure for the pads holds this information:
+
+        padId: distinct pad Id
+        padX, padY : (x,y) position of the pad
+        padAngleZ: angle direction of pad (90, 180, 270 etc.)
+        padWidth, padHeight: width and height of pad
+        net: net connected to this pad
+
+PcbLayers
+It contains the details of PCB layers
+
+        layerId: Unique layer Id
+        layerName: name of existing layer
+        layerType: type of layers
+
+PcbNets
+Details of existing PCB nets
+
+        netId: Unique net Id
+        netName: Name of the net
+
+PcbModules
+It contains the details of PCB modules
+
+        moduleId: Unique module Id
+        moduleType: Type of module (example: LEDV, R4)
+        moduleLayer: PCB layer where the module is connected
+        positionX, positionY: (x,y) position of the module
+        angleZ: angle direction of module (90, 180, 270 etc.)
+        moduleName: name of the module (example: R1, R2 etc.)
+        componentWidth: width of the module
+        componentHeight: height of the module
+        pad: list of pads of this module
+
+
+    Each of these structures contains information about PCB components, nets, pads, layers etc. Memory requirement scales linearly with the number of components, or as O(N) for each component.
