@@ -52,7 +52,7 @@ public class PcbParser {
       for(int j=0;j<moduleList.size();j++)
         System.out.println(moduleList.get(j).moduleId+" "+moduleList.get(j).moduleName+" "+moduleList.get(j).pad.size()+"\n");
         //System.out.println("numberOfNets  ::"+numberOfNets);
-      System.out.println("pcbBoardX1: "+pcbBoardX1+" "+pcbBoardX2+" "+pcbBoardY1+" "+pcbBoardY2);
+      System.out.println("pcbBoardX1: "+pcbBoardX1+" "+pcbBoardX2+" "+"pcbBoardY1: "+pcbBoardY1+" "+pcbBoardY2);
       }catch (Exception e){
     	System.err.println("Error: " + e.getMessage());
       }
