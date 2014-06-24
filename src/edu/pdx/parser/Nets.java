@@ -1,10 +1,15 @@
 package edu.pdx.parser;
 
+/**
+ * @author Arindam Banerjee
+ *
+ */
+
 public class Nets {
   
-  int netId;
-  String compName;
-  int pin;
+  public int netId;
+  public String compName;
+  public int pin;
 
   public Nets (int Id, String comp, int pin) {
     this.netId = Id;

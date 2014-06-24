@@ -1,5 +1,10 @@
 package edu.pdx.pcbparser;
 
+/**
+ * @author Arindam Banerjee
+ *
+ */
+
 public class PcbNets {
   
   int netId;
