@@ -22,10 +22,8 @@ public class Placer {
 	  System.exit(1);
 	}
     try{
-    System.out.println(args[0]);
-    System.out.println(args[1]);
     FmVerticalPartitioner(args[0], args[1]);
-    FmHorizontalPartitioner(args[0], args[1]);
+    //FmHorizontalPartitioner(args[0], args[1]);
     }catch(Exception e){
     	System.err.print(e.getMessage());
     }
@@ -36,6 +34,7 @@ public class Placer {
     PcbParser pcbparser = new PcbParser(args1);
     pcbparser.pcbParse();
     Integer[] index = new Integer[netparser.netList.size()];
+    int totalGain = 0;
     List<String> leftBucket = new ArrayList<String>();
     List<String> rightBucket = new ArrayList<String>();
     List<ComponentGain> compgain = new ArrayList<ComponentGain>();
@@ -57,6 +56,7 @@ public class Placer {
       index[j]=0;
     }
     for(int i=0;i<netparser.netList.size();i++){
+      gain=0;
       if(index[i]==0){
         index[i]=1;
         for(int j=i+1;j<netparser.netList.size();j++){
