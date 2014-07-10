@@ -7,4 +7,6 @@ public class ComponentGain {
     this.nameOfComp = compName;
     this.gain = gain;
   }
+  public ComponentGain () {
+  }  
 }
