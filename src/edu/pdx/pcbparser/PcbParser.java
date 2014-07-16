@@ -1,25 +1,32 @@
 package edu.pdx.pcbparser;
 
+/**
+ * @author Arindam Banerjee
+ *
+ */
+
 import java.io.*;
 import java.util.*;
 
 public class PcbParser {
-  String pcbInputFile, strLine="", layerName="", layerType="", netName="", moduleType="", moduleLayer="",moduleName="";
-  String startIndex="";
+  public String pcbInputFile, strLine="", layerName="", layerType="", netName="", moduleType="", moduleLayer="",moduleName="";
+  public String startIndex="";
   char endChar='a';
-  List<PcbLayers> layerList = new ArrayList<PcbLayers>();
-  List<PcbNets> netList = new ArrayList<PcbNets>();
-  List<PcbModules> moduleList = new ArrayList<PcbModules>();
-  List<Float> dimensionX = new ArrayList<Float>(); 
-  List<Float> dimensionY = new ArrayList<Float>();
-  int layerId=0, numberOfNets=0, netId=0, moduleId=0, angleZ=0, numIndex=0, padAngleZ=0, padId=0, READFLAG=1;
-  float positionX=0.00f, positionY=0.00f, componentWidth=0.00f,componentHeight=0.00f, padX=0.00f, padY=0.00f,padWidth=0.00f, padHeight=0.00f;
-  float pcbBoardX1, pcbBoardX2, pcbBoardY1, pcbBoardY2;
+  public List<PcbLayers> layerList = new ArrayList<PcbLayers>();
+  public List<PcbNets> netList = new ArrayList<PcbNets>();
+  public List<PcbModules> moduleList = new ArrayList<PcbModules>();
+  public List<Float> dimensionX = new ArrayList<Float>(); 
+  public List<Float> dimensionY = new ArrayList<Float>();
+  public int layerId=0, numberOfNets=0, netId=0, moduleId=0, angleZ=0, numIndex=0, padAngleZ=0, padId=0, READFLAG=1;
+  public float positionX=0.00f, positionY=0.00f, componentWidth=0.00f,componentHeight=0.00f, padX=0.00f, padY=0.00f,padWidth=0.00f, padHeight=0.00f;
+  public float pcbBoardXmin, pcbBoardXmax, pcbBoardYmin, pcbBoardYmax;
   boolean isLayer = true, isNets = true;
   BufferedReader br;
   FileInputStream fstream;
   public PcbParser(String pcbInputFile) {
     this.pcbInputFile =  pcbInputFile;     	
+  }
+  public PcbParser() {    	
   }
 	
   public void pcbParse(){
@@ -49,10 +56,10 @@ public class PcbParser {
       }
       br.close();
       //testing
-      for(int j=0;j<moduleList.size();j++)
+      /*for(int j=0;j<moduleList.size();j++)
         System.out.println(moduleList.get(j).moduleId+" "+moduleList.get(j).moduleName+" "+moduleList.get(j).pad.size()+"\n");
         //System.out.println("numberOfNets  ::"+numberOfNets);
-      System.out.println("pcbBoardX1_: "+pcbBoardX1+" "+pcbBoardX2+" "+"pcbBoardY1_: "+pcbBoardY1+" "+pcbBoardY2);
+      System.out.println("pcbBoardX1_: "+pcbBoardXmin+" "+pcbBoardXmax+" "+"pcbBoardY1_: "+pcbBoardYmin+" "+pcbBoardYmax);*/
       }catch (Exception e){
     	System.err.println("Error: " + e.getMessage());
       }
@@ -186,6 +193,7 @@ public class PcbParser {
 	}
   }
   public void getDimensions(){
+    /*This method gets the dimension data from file and feeds to data structure*/
     try{
       String[] coord;
       coord = getSubstring("(start ", ')', 7).split(" ");
@@ -200,12 +208,13 @@ public class PcbParser {
     }
   }
   public void getPcbDimensions(){
+    /*this method computes the total dimension of the PCB*/
     Collections.sort(dimensionX);
     Collections.sort(dimensionY);
-    pcbBoardX1 = dimensionX.get(0);
-    pcbBoardX2 = dimensionX.get(dimensionX.size()-1);
-    pcbBoardY1 = dimensionY.get(0);
-    pcbBoardY2 = dimensionY.get(dimensionY.size()-1);
+    pcbBoardXmin = dimensionX.get(0);
+    pcbBoardXmax = dimensionX.get(dimensionX.size()-1);
+    pcbBoardYmin = dimensionY.get(0);
+    pcbBoardYmax = dimensionY.get(dimensionY.size()-1);
   }
   public String getSubstring(String startIndex, char endChar, int numIndex){
     int start = strLine.indexOf(startIndex) + numIndex;
