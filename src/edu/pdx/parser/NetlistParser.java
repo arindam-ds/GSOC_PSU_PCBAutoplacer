@@ -75,19 +75,19 @@ public class NetlistParser {
           if (compList.get(j).nameOfCompPart.equalsIgnoreCase(libPartName) && numOfPins>0) {
             compList.get(j).numOfPin = numOfPins;
           }
-         }
-         if (strLine.contains("(net ")) {
-           netId++;
-         }
-         if (strLine.contains("(node ")) {
-           start = strLine.indexOf("(ref ") + 5;
-           end = start;
-           for (final char c : strLine.substring(start).toCharArray()) {
-             if (c == ')') {
-               break;
-             }
-             ++end;
-           }
+        }
+        if (strLine.contains("(net ")) {
+          netId++;
+        }
+        if (strLine.contains("(node ")) {
+          start = strLine.indexOf("(ref ") + 5;
+          end = start;
+          for (final char c : strLine.substring(start).toCharArray()) {
+            if (c == ')') {
+              break;
+            }
+            ++end;
+          }
 		   //System.out.println(strLine.substring(start, end));
            netCompName = strLine.substring(start, end);
            start = strLine.indexOf("(pin ") + 5;
@@ -132,14 +132,14 @@ public class NetlistParser {
            }
          }
        }
-       System.out.println ("Net--To--Components");
+       /*System.out.println ("Net--To--Components");
        for(int j=0;j<compToNetList.size();j++){
          System.out.println(compToNetList.get(j).nameOfComp);
          for(int k=0;k<compToNetList.get(j).netIdList.size();k++){
            System.out.println(compToNetList.get(j).netIdList.get(k));   	  
          }
        }
-       System.out.println ("Net--To--Components--ENDS");
+       System.out.println ("Net--To--Components--ENDS");*/
     } catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
       }
