@@ -85,26 +85,9 @@ public class FmHeuristic {
     while((totalCurrentGain < totalPrevGain)&&(numberOfPass<=netparser.compList.size())){
 	  numberOfPass++;
       totalPrevGain = totalCurrentGain;
+      totalCurrentGain=0;
+      compGainList.clear();
       /*Gain calculation*/
-      /*for(int i=0;i<netparser.compToNetList.size();i++){
-        gain=0;
-        totalCurrentGain=0;
-        for(int n=0;n<netparser.compToNetList.get(i).netIdList.size();n++){
-          for(int j=i+1;j<netparser.compToNetList.size();j++){
-            if(netparser.compToNetList.get(j).netIdList.contains(netparser.compToNetList.get(i).netIdList.get(n))){
-              if(firstBucket.contains(netparser.compToNetList.get(i).nameOfComp) && secondBucket.contains(netparser.compToNetList.get(j).nameOfComp)){
-                gain++;
-              }
-              else if(secondBucket.contains(netparser.compToNetList.get(i).nameOfComp) && firstBucket.contains(netparser.compToNetList.get(j).nameOfComp)){
-                gain++;
-              }
-              else
-                gain--;
-            }
-          } 
-        } 
-        compGainList.add(new ComponentGain(netparser.netList.get(i).compName, gain));
-      } */
       for(int i=0; i<netparser.compList.size(); i++){
         compGainList.add(new ComponentGain(netparser.compList.get(i).nameOfComp, 0));
       }
@@ -143,29 +126,24 @@ public class FmHeuristic {
         if(tempFirstBucket.isEmpty()){
           //gain--
           for(int k=0; k<tempSecondBucket.size(); k++){
-            if(compGainList.contains(tempSecondBucket.get(k))){
-              compGainList.get(compGainList.indexOf(tempSecondBucket.get(k))).gain--;
+            for(int m=0; m<compGainList.size(); m++){
+              if(compGainList.get(m).nameOfComp.equals(tempSecondBucket.get(k))){
+                compGainList.get(m).gain--;
+              }
             }
-            else
-              compGainList.add(new ComponentGain(tempSecondBucket.get(k), -1));    
           }
       	}
     	if(tempSecondBucket.isEmpty()){
           //gain--
           for(int k=0; k<tempFirstBucket.size(); k++){
-            if(compGainList.contains(tempFirstBucket.get(k))){
-              compGainList.get(compGainList.indexOf(tempFirstBucket.get(k))).gain--;
+            for(int m=0; m<compGainList.size(); m++){
+              if(compGainList.get(m).nameOfComp.equals(tempFirstBucket.get(k))){
+                compGainList.get(m).gain--;
+              }
             }
-            else
-              compGainList.add(new ComponentGain(tempFirstBucket.get(k), -1));    
           }
       	}
       }
-      System.out.println("Here");
-      for(int i=0;i<compGainList.size();i++){
-        System.out.println("FmH Component: "+compGainList.get(i).nameOfComp+" FmH Gain: "+compGainList.get(i).gain);	
-      }
-      System.out.println("There");
       /*sorting component gain to get maximum gain */
       ComponentGain temp = new ComponentGain();
       for(int pass=compGainList.size()-1;pass>=0;pass--){
@@ -202,6 +180,9 @@ public class FmHeuristic {
         totalCurrentGain = totalCurrentGain + compGainList.get(i).gain;
       }
 	}//while loop ends 
+    for(int i=0;i<compGainList.size();i++){
+      System.out.println("FmH Component: "+compGainList.get(i).nameOfComp+" FmH Gain: "+compGainList.get(i).gain);	
+    }
     }catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
       }
