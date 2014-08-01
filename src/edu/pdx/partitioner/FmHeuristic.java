@@ -15,10 +15,6 @@ import edu.pdx.parser.*;
 public class FmHeuristic {
   String netlistFile="";
   String pcbFile="";
-  int totalPrevGain, totalCurrentGain;
-  int numberOfPass=1;
-  int gain=0;
-  int areaConstraintMin;
   List<String> leftBucket = new ArrayList<String>();
   List<String> rightBucket = new ArrayList<String>();
   List<String> topLeftBucket = new ArrayList<String>();
@@ -52,7 +48,7 @@ public class FmHeuristic {
       System.out.println("test right after:"+rightBucket.get(j));
     }catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
-      }
+     }
   }//FmVerticalPartitioner() ends
   public void FmHorizontalPartitioner(){
     NetlistParser netparser = new NetlistParser(netlistFile);
@@ -71,23 +67,30 @@ public class FmHeuristic {
       bottomRightBucket.add(rightBucket.get(i));		
     }
     CorePartitioner(topRightBucket, bottomRightBucket);
+    CorePartitioner(topLeftBucket, bottomLeftBucket);
   }//FmHorizontalPartitioner() ends
   public void CorePartitioner(List<String> firstBucket, List<String> secondBucket){
     try{
+    int totalPrevGain = 999, totalCurrentGain = 998;
+    int numberOfPass=1;
+    int areaConstraintMin = ((firstBucket.size()+secondBucket.size()) * 40)/100;
     List<String> tempFirstBucket = new ArrayList<String>();
     List<String> tempSecondBucket = new ArrayList<String>();
+    List<String> prevFirstBucket = new ArrayList<String>();
+    List<String> prevSecondBucket = new ArrayList<String>();
     NetlistParser netparser = new NetlistParser(netlistFile);
-    netparser.parse();  
-    totalPrevGain = 999;
-    totalCurrentGain=998;
-    areaConstraintMin = (netparser.numberOfComponents * 40)/100;
-    //int areaConstraintMax = (netparser.numberOfComponents)*(60/100);
+    netparser.parse();
     while((totalCurrentGain < totalPrevGain)&&(numberOfPass<=netparser.compList.size())){
+      prevFirstBucket.clear();
+      prevSecondBucket.clear();
+      prevFirstBucket.addAll(firstBucket);
+      prevSecondBucket.addAll(secondBucket);
 	  numberOfPass++;
       totalPrevGain = totalCurrentGain;
       totalCurrentGain=0;
       compGainList.clear();
       /*Gain calculation*/
+      /*Initialize compGainList with zero gain for each component for each pass*/
       for(int i=0; i<netparser.compList.size(); i++){
         compGainList.add(new ComponentGain(netparser.compList.get(i).nameOfComp, 0));
       }
@@ -105,6 +108,9 @@ public class FmHeuristic {
             }
     	  }
     	}
+    	/*Removing duplicate entries from tempFirstBucket and tempSecondBucket*/
+    	tempFirstBucket = RemoveDuplicates(tempFirstBucket);
+    	tempSecondBucket = RemoveDuplicates(tempSecondBucket);
     	if(tempFirstBucket.size()==1){
           //gain++
           for(int m=0; m<=compGainList.size();m++){
@@ -180,11 +186,21 @@ public class FmHeuristic {
         totalCurrentGain = totalCurrentGain + compGainList.get(i).gain;
       }
 	}//while loop ends 
+    firstBucket.clear();
+    firstBucket.addAll(prevFirstBucket);
+    secondBucket.clear();
+    secondBucket.addAll(prevSecondBucket);
     for(int i=0;i<compGainList.size();i++){
       System.out.println("FmH Component: "+compGainList.get(i).nameOfComp+" FmH Gain: "+compGainList.get(i).gain);	
     }
     }catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
-      }
+     }
+  }
+  public List<String> RemoveDuplicates(List<String> listName){
+    Set<String> setItem = new LinkedHashSet<String>(listName);
+    listName.clear();
+    listName.addAll(setItem);
+    return listName;
   }
 }
