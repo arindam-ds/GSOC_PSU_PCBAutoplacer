@@ -25,6 +25,6 @@ public class Placer {
 	}
     FmHeuristic fmh = new FmHeuristic(args[0], args[1]);
     fmh.FmVerticalPartitioner();
-    //fmh.FmHorizontalPartitioner();
+    fmh.FmHorizontalPartitioner();
   }
 }
