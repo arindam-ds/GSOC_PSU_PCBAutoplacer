@@ -23,8 +23,13 @@ public class Placer {
 	  System.err.println("Invalid command line, exactly two argument required to specify input file");
 	  System.exit(1);
 	}
+    PcbParser p = new PcbParser(args[1]);
+    p.pcbParse();
     FmHeuristic fmh = new FmHeuristic(args[0], args[1]);
     fmh.FmVerticalPartitioner();
-    //fmh.FmHorizontalPartitioner();
+    fmh.FmHorizontalPartitioner();
+    float hpwl = fmh.CalculateHpwl();
+    ComponentPlacer cp = new ComponentPlacer(args[1], fmh.topLeftBucket, p.moduleList, 1);
+    cp.Placer();
   }
 }

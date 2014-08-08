@@ -56,15 +56,14 @@ public class PcbParser {
       }
       br.close();
       //testing
-      /*for(int j=0;j<moduleList.size();j++)
-        System.out.println(moduleList.get(j).moduleId+" "+moduleList.get(j).moduleName+" "+moduleList.get(j).pad.size()+"\n");
+      for(int j=0;j<moduleList.size();j++)
+        System.out.println(moduleList.get(j).moduleName+" "+moduleList.get(j).positionX+" "+moduleList.get(j).positionY+"\n");
         //System.out.println("numberOfNets  ::"+numberOfNets);
-      System.out.println("pcbBoardX1_: "+pcbBoardXmin+" "+pcbBoardXmax+" "+"pcbBoardY1_: "+pcbBoardYmin+" "+pcbBoardYmax);*/
+      /*System.out.println("pcbBoardX1_: "+pcbBoardXmin+" "+pcbBoardXmax+" "+"pcbBoardY1_: "+pcbBoardYmin+" "+pcbBoardYmax);*/
       }catch (Exception e){
     	System.err.println("Error: " + e.getMessage());
       }
 	}
-	
   public void getLayers(){
     isLayer = false;
     for(int i=0; i<15; i++){

@@ -4,15 +4,15 @@ import java.util.*;
 
 public class PcbModules {
   
-  int moduleId;
-  String moduleType;//Ex: LEDV, R4
-  String moduleLayer; // Ex: F.Cu
-  float positionX;
-  float positionY;
-  int angleZ;
-  String moduleName; //Ex: R1, R2, R3
+  public int moduleId;
+  public String moduleType;//Ex: LEDV, R4
+  public String moduleLayer; // Ex: F.Cu
+  public float positionX;
+  public float positionY;
+  public int angleZ;
+  public String moduleName; //Ex: R1, R2, R3
   //String moduleNameValue;//future use
-  float componentWidth;
-  float componentHeight;
-  List<Pads> pad;
+  public float componentWidth;
+  public float componentHeight;
+  public List<Pads> pad;
 }
