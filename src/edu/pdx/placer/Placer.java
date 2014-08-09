@@ -28,11 +28,8 @@ public class Placer {
     FmHeuristic fmh = new FmHeuristic(args[0], args[1]);
     fmh.FmVerticalPartitioner();
     fmh.FmHorizontalPartitioner();
-<<<<<<< HEAD
     float hpwl = fmh.CalculateHpwl();
     ComponentPlacer cp = new ComponentPlacer(args[1], fmh.topLeftBucket, p.moduleList, 1);
     cp.Placer();
-=======
->>>>>>> 4015571de02be7d249807f5793ed93d3647e80dc
   }
 }

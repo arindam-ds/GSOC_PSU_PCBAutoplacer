@@ -29,7 +29,7 @@ public class ComponentPlacer {
     pp.pcbParse();
     SetCenterOfPcb(pp);
     SetDimensionOfPcb(pp);
-    grid = new int[(int)(pcbBoardXmax)+1][(int)(pcbBoardYmax)+1];
+    grid = new int[(int)(pcbBoardXmax-pcbBoardXmin)+1][(int)(pcbBoardYmax-pcbBoardYmin)+1];
     switch(PLACEMENT){
       case 1:
         PlaceTopLeftPartition();
@@ -94,15 +94,17 @@ public class ComponentPlacer {
   }
   public void PlaceTopLeftPartition(){
 	int startX = (int)centerOfPcbX, endX = (int)pcbBoardXmin, startY = (int)centerOfPcbY, endY = (int)pcbBoardYmin; 
-	int count = 0, PLACED, ROTATE=0;
+	int count = 0, PLACED, ROTATE=0, a, b;
 	boolean ret;
     while(!compSizeList.isEmpty()){
       PLACED=0;
       for(int y=startY; y>=endY; y--){
         for(int x=startX; x>=endX; x--){
           ret = false;
-          if(grid[y][x]==0){
-            ret = checkAvailablityTopLeft(x,y,endX,endY,compSizeList.get(count).width,compSizeList.get(count).height);
+          a=x-endX;
+          b=y-endY;
+          if(grid[b][a]==0){
+            ret = checkAvailablityTopLeft(a,b,endX,endY,compSizeList.get(count).width,compSizeList.get(count).height);
           }
           if(ret == true){
             compSizeList.get(count).compCenterX = (x - compSizeList.get(count).width/2);
@@ -114,7 +116,6 @@ public class ComponentPlacer {
         if(PLACED==1)
           break;
       }
-      count++;
       if(PLACED==1 || ROTATE==1){
         compSizeList.remove(count);
         ROTATE=0;
@@ -122,7 +123,6 @@ public class ComponentPlacer {
       else{
         if(ROTATE==0){
           ROTATE=1;
-          count--;
           compSizeList.get(count).height = compSizeList.get(count).height + compSizeList.get(count).width;
           compSizeList.get(count).width = compSizeList.get(count).height - compSizeList.get(count).width;
           compSizeList.get(count).height = compSizeList.get(count).height - compSizeList.get(count).width;
@@ -130,11 +130,11 @@ public class ComponentPlacer {
       }
     }
   }
-  boolean checkAvailablityTopLeft(int x, int y, int endX, int endY, int width, int height){
+  boolean checkAvailablityTopLeft(int a, int b, int endX, int endY, int width, int height){
     int count = 0;
-    if((y-width+1)>=endY && (x-height+1)>=endX){
-      for(int i=y;i>(y-width);i--){
-        for(int j=x;j>(x-height);j--){
+    if((b-height+1)>=0 && (a-width+1)>=0){
+      for(int i=b;i>(b-height);i--){
+        for(int j=a;j>(a-width);j--){
           if(grid[i][j]==0)
             count++;
         }
@@ -142,8 +142,8 @@ public class ComponentPlacer {
     }
     if((width*height)==count){
       //make occupied
-      for(int i=y;i>(y-width);i--)
-        for(int j=x;j>(x-height);j--)
+      for(int i=b;i>(b-height);i--)
+        for(int j=a;j>(a-width);j--)
           grid[i][j]=1;
       return true;
     }

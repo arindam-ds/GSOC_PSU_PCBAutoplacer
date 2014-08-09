@@ -202,7 +202,6 @@ public class FmHeuristic {
     listName.clear();
     listName.addAll(setItem);
     return listName;
-<<<<<<< HEAD
   }
   public float CalculateHpwl(){
     float minX, maxX, minY, maxY, hpwl=0;
@@ -239,7 +238,5 @@ public class FmHeuristic {
       hpwl = hpwl + (maxX-minX)+(maxY-minY);
     }
     return hpwl;
-=======
->>>>>>> 4015571de02be7d249807f5793ed93d3647e80dc
   }
 }
