@@ -40,6 +40,7 @@ public class ComponentPlacer {
       case 4:
         PlaceBottomRightPartition();
     }
+    //for(int a=0;a<moduleList.size())
   }
   public void GetComponentSize(List<PcbModules>moduleList){
   /*This method will calculate component width, height from module list and will add that in component size list*/ 
@@ -104,7 +105,7 @@ public class ComponentPlacer {
           a=x-endX;
           b=y-endY;
           if(grid[b][a]==0){
-            ret = checkAvailablityTopLeft(a,b,endX,endY,compSizeList.get(count).width,compSizeList.get(count).height);
+            ret = checkAvailablityTopLeft(a,b,compSizeList.get(count).width,compSizeList.get(count).height);
           }
           if(ret == true){
             compSizeList.get(count).compCenterX = (x - compSizeList.get(count).width/2);
@@ -117,8 +118,20 @@ public class ComponentPlacer {
           break;
       }
       if(PLACED==1 || ROTATE==1){
-        compSizeList.remove(count);
-        ROTATE=0;
+        if(PLACED==0 && ROTATE==1){
+          ROTATE=0;
+        }
+        else{
+          for(int m=0; m<moduleList.size(); m++)
+          {
+            if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
+              moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
+              moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
+            }
+          }
+          compSizeList.remove(count);
+          ROTATE=0;	
+        }
       }
       else{
         if(ROTATE==0){
@@ -130,7 +143,7 @@ public class ComponentPlacer {
       }
     }
   }
-  boolean checkAvailablityTopLeft(int a, int b, int endX, int endY, int width, int height){
+  boolean checkAvailablityTopLeft(int a, int b, int width, int height){
     int count = 0;
     if((b-height+1)>=0 && (a-width+1)>=0){
       for(int i=b;i>(b-height);i--){
@@ -151,12 +164,213 @@ public class ComponentPlacer {
       return false;
   }
   public void PlaceTopRightPartition(){
-	  
+    int startX = (int)centerOfPcbX, endX = (int)pcbBoardXmax, startY = (int)centerOfPcbY, endY = (int)pcbBoardYmin; 
+    int count = 0, PLACED, ROTATE=0, a, b;
+    boolean ret;
+	while(!compSizeList.isEmpty()){
+      PLACED=0;
+      for(int y=startY; y>=endY; y--){
+        for(int x=startX; x>=endX; x++){
+          ret = false;
+          a=endX-x;
+          b=y-endY;
+          if(grid[b][a]==0){
+            ret = checkAvailablityTopRight(a,b,compSizeList.get(count).width,compSizeList.get(count).height);
+          }
+          if(ret == true){
+            compSizeList.get(count).compCenterX = (x + compSizeList.get(count).width/2);
+            compSizeList.get(count).compCenterY = (y - compSizeList.get(count).height/2);
+            PLACED=1;
+            break;
+          }
+        }
+        if(PLACED==1)
+          break;
+      }
+      if(PLACED==1 || ROTATE==1){
+        if(PLACED==0 && ROTATE==1){
+          ROTATE=0;
+        }
+        else{
+          for(int m=0; m<moduleList.size(); m++)
+          {
+            if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
+              moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
+              moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
+            }
+          }
+          compSizeList.remove(count);
+          ROTATE=0;	
+        }
+      }
+      else{
+        if(ROTATE==0){
+          ROTATE=1;
+          compSizeList.get(count).height = compSizeList.get(count).height + compSizeList.get(count).width;
+          compSizeList.get(count).width = compSizeList.get(count).height - compSizeList.get(count).width;
+          compSizeList.get(count).height = compSizeList.get(count).height - compSizeList.get(count).width;
+        }
+      }
+    }	  
+ }
+  boolean checkAvailablityTopRight(int a, int b, int width, int height){
+    int count = 0;
+    if((b-height+1)>=0 && (a+width+1)<=(pcbBoardXmax-pcbBoardXmin)){
+      for(int i=b;i>(b-height);i--){
+        for(int j=a;j>(a+width);j++){
+          if(grid[i][j]==0)
+            count++;
+        }
+      }
+    }
+    if((width*height)==count){
+      //make occupied
+      for(int i=b;i>(b-height);i--)
+        for(int j=a;j>(a+width);j++)
+          grid[i][j]=1;
+      return true;
+    }
+    else
+      return false;
   }
   public void PlaceBottomLeftPartition(){
-	  
+    int startX = (int)centerOfPcbX, endX = (int)pcbBoardXmin, startY = (int)centerOfPcbY, endY = (int)pcbBoardYmax;
+    int count = 0, PLACED, ROTATE=0, a, b;
+    boolean ret;
+    while(!compSizeList.isEmpty()){
+      PLACED=0;
+      for(int y=startY; y>=endY; y++){
+        for(int x=startX; x>=endX; x--){
+          ret = false;
+          a=x-endX;
+          b=endY-y;
+          if(grid[b][a]==0){
+            ret = checkAvailablityBottomLeft(a,b,compSizeList.get(count).width,compSizeList.get(count).height);
+          }
+          if(ret == true){
+            compSizeList.get(count).compCenterX = (x - compSizeList.get(count).width/2);
+            compSizeList.get(count).compCenterY = (y + compSizeList.get(count).height/2);
+            PLACED=1;
+            break;
+          }
+        }
+        if(PLACED==1)
+          break;
+      }
+      if(PLACED==1 || ROTATE==1){
+        if(PLACED==0 && ROTATE==1){
+          ROTATE=0;
+        }
+        else{
+          for(int m=0; m<moduleList.size(); m++)
+          {
+            if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
+              moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
+              moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
+            }
+          }
+          compSizeList.remove(count);
+          ROTATE=0; 
+        }
+      }
+      else{
+        if(ROTATE==0){
+          ROTATE=1;
+          compSizeList.get(count).height = compSizeList.get(count).height + compSizeList.get(count).width;
+          compSizeList.get(count).width = compSizeList.get(count).height - compSizeList.get(count).width;
+          compSizeList.get(count).height = compSizeList.get(count).height - compSizeList.get(count).width;
+        }
+      }
+    }   	  
+  }
+  boolean checkAvailablityBottomLeft(int a, int b, int width, int height){
+    int count = 0;
+    if((b+height+1)<=(pcbBoardYmax-pcbBoardYmin) && (a-width+1)>=0){
+      for(int i=b;i>(b+height);i++){
+        for(int j=a;j>(a-width);j--){
+          if(grid[i][j]==0)
+            count++;
+        }
+      }
+    }
+    if((width*height)==count){
+      //make occupied
+      for(int i=b;i>(b+height);i++)
+        for(int j=a;j>(a-width);j--)
+          grid[i][j]=1;
+      return true;
+    }
+    else
+      return false;
   }
   public void PlaceBottomRightPartition(){
-	  
+    int startX = (int)centerOfPcbX, endX = (int)pcbBoardXmax, startY = (int)centerOfPcbY, endY = (int)pcbBoardYmax;
+    int count = 0, PLACED, ROTATE=0, a, b;
+    boolean ret;
+    while(!compSizeList.isEmpty()){
+      PLACED=0;
+      for(int y=startY; y>=endY; y++){
+        for(int x=startX; x>=endX; x++){
+          ret = false;
+          a=endX-x;
+          b=endY-y;
+          if(grid[b][a]==0){
+            ret = checkAvailablityBottomRight(a,b,compSizeList.get(count).width,compSizeList.get(count).height);
+          }
+          if(ret == true){
+            compSizeList.get(count).compCenterX = (x - compSizeList.get(count).width/2);
+            compSizeList.get(count).compCenterY = (y + compSizeList.get(count).height/2);
+            PLACED=1;
+            break;
+          }
+        }
+        if(PLACED==1)
+          break;
+      }
+      if(PLACED==1 || ROTATE==1){
+        if(PLACED==0 && ROTATE==1){
+          ROTATE=0;
+        }
+        else{
+          for(int m=0; m<moduleList.size(); m++)
+          {
+            if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
+              moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
+              moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
+            }
+          }
+          compSizeList.remove(count);
+          ROTATE=0; 
+        }
+      }
+      else{
+        if(ROTATE==0){
+          ROTATE=1;
+          compSizeList.get(count).height = compSizeList.get(count).height + compSizeList.get(count).width;
+          compSizeList.get(count).width = compSizeList.get(count).height - compSizeList.get(count).width;
+          compSizeList.get(count).height = compSizeList.get(count).height - compSizeList.get(count).width;
+        }
+      }
+    }	  
+  }
+  boolean checkAvailablityBottomRight(int a, int b, int width, int height){
+    int count = 0;
+    if((b+height+1)<=(pcbBoardYmax-pcbBoardYmin) && (a+width+1)>=(pcbBoardXmax-pcbBoardXmin)){
+      for(int i=b;i>(b+height);i++){
+        for(int j=a;j>(a+width);j++){
+          if(grid[i][j]==0)
+            count++;
+        }
+      }
+    }
+    if((width*height)==count){
+      //make occupied
+      for(int i=b;i>(b+height);i++)
+        for(int j=a;j>(a+width);j++)
+          grid[i][j]=1;
+      return true;
+    }
+    else
+      return false;
   }
 }
