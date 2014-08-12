@@ -33,11 +33,15 @@ public class Placer {
     ComponentPlacer cp;
     cp = new ComponentPlacer(args[1], fmh.topLeftBucket, p.moduleList, 1);
     cp.Placer();
+    System.out.println("first");
     cp = new ComponentPlacer(args[1], fmh.topRightBucket, p.moduleList, 2);
     cp.Placer();
+    System.out.println("second");
     cp = new ComponentPlacer(args[1], fmh.bottomLeftBucket, p.moduleList, 3);
     cp.Placer();
+    System.out.println("third");
     cp = new ComponentPlacer(args[1], fmh.bottomRightBucket, p.moduleList, 4);
     cp.Placer();
+    System.out.println("fourth");
   }
 }

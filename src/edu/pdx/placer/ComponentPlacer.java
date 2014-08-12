@@ -104,7 +104,7 @@ public class ComponentPlacer {
           ret = false;
           a=x-endX;
           b=y-endY;
-          if(grid[b][a]==0){
+          if(grid[a][b]==0){
             ret = checkAvailablityTopLeft(a,b,compSizeList.get(count).width,compSizeList.get(count).height);
           }
           if(ret == true){
@@ -127,6 +127,7 @@ public class ComponentPlacer {
             if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
               moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
               moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
+              break;
             }
           }
           compSizeList.remove(count);
@@ -148,7 +149,7 @@ public class ComponentPlacer {
     if((b-height+1)>=0 && (a-width+1)>=0){
       for(int i=b;i>(b-height);i--){
         for(int j=a;j>(a-width);j--){
-          if(grid[i][j]==0)
+          if(grid[j][i]==0)
             count++;
         }
       }
@@ -157,24 +158,24 @@ public class ComponentPlacer {
       //make occupied
       for(int i=b;i>(b-height);i--)
         for(int j=a;j>(a-width);j--)
-          grid[i][j]=1;
+          grid[j][i]=1;
       return true;
     }
     else
       return false;
   }
   public void PlaceTopRightPartition(){
-    int startX = (int)centerOfPcbX, endX = (int)pcbBoardXmax, startY = (int)centerOfPcbY, endY = (int)pcbBoardYmin; 
+    int startX = 1+(int)centerOfPcbX, endX = (int)pcbBoardXmax, startY = (int)centerOfPcbY, endY = (int)pcbBoardYmin; 
     int count = 0, PLACED, ROTATE=0, a, b;
     boolean ret;
 	while(!compSizeList.isEmpty()){
       PLACED=0;
       for(int y=startY; y>=endY; y--){
-        for(int x=startX; x>=endX; x++){
+        for(int x=startX; x<=endX; x++){
           ret = false;
-          a=endX-x;
+          a=x-(int)pcbBoardXmin;
           b=y-endY;
-          if(grid[b][a]==0){
+          if(grid[a][b]==0){
             ret = checkAvailablityTopRight(a,b,compSizeList.get(count).width,compSizeList.get(count).height);
           }
           if(ret == true){
@@ -197,6 +198,7 @@ public class ComponentPlacer {
             if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
               moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
               moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
+              break;
             }
           }
           compSizeList.remove(count);
@@ -217,8 +219,8 @@ public class ComponentPlacer {
     int count = 0;
     if((b-height+1)>=0 && (a+width+1)<=(pcbBoardXmax-pcbBoardXmin)){
       for(int i=b;i>(b-height);i--){
-        for(int j=a;j>(a+width);j++){
-          if(grid[i][j]==0)
+        for(int j=a;j<(a+width);j++){
+          if(grid[j][i]==0)
             count++;
         }
       }
@@ -226,25 +228,26 @@ public class ComponentPlacer {
     if((width*height)==count){
       //make occupied
       for(int i=b;i>(b-height);i--)
-        for(int j=a;j>(a+width);j++)
-          grid[i][j]=1;
+        for(int j=a;j<(a+width);j++)
+          grid[j][i]=1;
       return true;
     }
     else
       return false;
   }
   public void PlaceBottomLeftPartition(){
-    int startX = (int)centerOfPcbX, endX = (int)pcbBoardXmin, startY = (int)centerOfPcbY, endY = (int)pcbBoardYmax;
+    int startX = (int)centerOfPcbX-1, endX = (int)pcbBoardXmin, startY = 1+(int)centerOfPcbY, endY = (int)pcbBoardYmax;
     int count = 0, PLACED, ROTATE=0, a, b;
     boolean ret;
     while(!compSizeList.isEmpty()){
       PLACED=0;
-      for(int y=startY; y>=endY; y++){
+      for(int y=startY; y<=endY; y++){
         for(int x=startX; x>=endX; x--){
           ret = false;
           a=x-endX;
-          b=endY-y;
-          if(grid[b][a]==0){
+          //b=endY-y;
+          b=y-(int)pcbBoardYmin;
+          if(grid[a][b]==0){
             ret = checkAvailablityBottomLeft(a,b,compSizeList.get(count).width,compSizeList.get(count).height);
           }
           if(ret == true){
@@ -267,6 +270,7 @@ public class ComponentPlacer {
             if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
               moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
               moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
+              break;
             }
           }
           compSizeList.remove(count);
@@ -286,35 +290,35 @@ public class ComponentPlacer {
   boolean checkAvailablityBottomLeft(int a, int b, int width, int height){
     int count = 0;
     if((b+height+1)<=(pcbBoardYmax-pcbBoardYmin) && (a-width+1)>=0){
-      for(int i=b;i>(b+height);i++){
+      for(int i=b;i<(b+height);i++){
         for(int j=a;j>(a-width);j--){
-          if(grid[i][j]==0)
+          if(grid[j][i]==0)
             count++;
         }
       }
     }
     if((width*height)==count){
       //make occupied
-      for(int i=b;i>(b+height);i++)
+      for(int i=b;i<(b+height);i++)
         for(int j=a;j>(a-width);j--)
-          grid[i][j]=1;
+          grid[j][i]=1;
       return true;
     }
     else
       return false;
   }
   public void PlaceBottomRightPartition(){
-    int startX = (int)centerOfPcbX, endX = (int)pcbBoardXmax, startY = (int)centerOfPcbY, endY = (int)pcbBoardYmax;
+    int startX = 1+(int)centerOfPcbX, endX = (int)pcbBoardXmax, startY = 1+(int)centerOfPcbY, endY = (int)pcbBoardYmax;
     int count = 0, PLACED, ROTATE=0, a, b;
     boolean ret;
     while(!compSizeList.isEmpty()){
       PLACED=0;
-      for(int y=startY; y>=endY; y++){
-        for(int x=startX; x>=endX; x++){
+      for(int y=startY; y<=endY; y++){
+        for(int x=startX; x<=endX; x++){
           ret = false;
-          a=endX-x;
-          b=endY-y;
-          if(grid[b][a]==0){
+          a=x-(int)pcbBoardXmin;
+          b=y-(int)pcbBoardYmin;;
+          if(grid[a][b]==0){
             ret = checkAvailablityBottomRight(a,b,compSizeList.get(count).width,compSizeList.get(count).height);
           }
           if(ret == true){
@@ -337,6 +341,7 @@ public class ComponentPlacer {
             if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
               moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
               moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
+              break;
             }
           }
           compSizeList.remove(count);
@@ -355,19 +360,19 @@ public class ComponentPlacer {
   }
   boolean checkAvailablityBottomRight(int a, int b, int width, int height){
     int count = 0;
-    if((b+height+1)<=(pcbBoardYmax-pcbBoardYmin) && (a+width+1)>=(pcbBoardXmax-pcbBoardXmin)){
-      for(int i=b;i>(b+height);i++){
-        for(int j=a;j>(a+width);j++){
-          if(grid[i][j]==0)
+    if((b+height+1)<=(pcbBoardYmax-pcbBoardYmin) && (a+width+1)<=(pcbBoardXmax-pcbBoardXmin)){
+      for(int i=b;i<(b+height);i++){
+        for(int j=a;j<(a+width);j++){
+          if(grid[j][i]==0)
             count++;
         }
       }
     }
     if((width*height)==count){
       //make occupied
-      for(int i=b;i>(b+height);i++)
-        for(int j=a;j>(a+width);j++)
-          grid[i][j]=1;
+      for(int i=b;i<(b+height);i++)
+        for(int j=a;j<(a+width);j++)
+          grid[j][i]=1;
       return true;
     }
     else

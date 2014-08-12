@@ -37,15 +37,18 @@ public class FmHeuristic {
 	for(int i=(netparser.numberOfComponents/2);i<netparser.numberOfComponents;i++){
 	  rightBucket.add(netparser.compList.get(i).nameOfComp);	
 	}
+	//testing
+	/*
 	for(int j=0;j<leftBucket.size();j++)
 	  System.out.println("test left "+leftBucket.get(j));
 	for(int j=0;j<rightBucket.size();j++)
-	  System.out.println("test right "+rightBucket.get(j));
+	  System.out.println("test right "+rightBucket.get(j));*/
 	CorePartitioner(leftBucket, rightBucket);
-	for(int j=0;j<leftBucket.size();j++)
+	/*for(int j=0;j<leftBucket.size();j++)
       System.out.println("test left after:"+leftBucket.get(j));
     for(int j=0;j<rightBucket.size();j++)
       System.out.println("test right after:"+rightBucket.get(j));
+      */
     }catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
      }
@@ -190,9 +193,9 @@ public class FmHeuristic {
     firstBucket.addAll(prevFirstBucket);
     secondBucket.clear();
     secondBucket.addAll(prevSecondBucket);
-    for(int i=0;i<compGainList.size();i++){
+    /*for(int i=0;i<compGainList.size();i++){
       System.out.println("FmH Component: "+compGainList.get(i).nameOfComp+" FmH Gain: "+compGainList.get(i).gain);	
-    }
+    }*/
     }catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
      }
