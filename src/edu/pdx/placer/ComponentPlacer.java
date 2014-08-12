@@ -1,6 +1,7 @@
 package edu.pdx.placer;
 
 import java.util.*;
+import java.io.*;
 import java.lang.*;
 
 import edu.pdx.*;
@@ -33,14 +34,21 @@ public class ComponentPlacer {
     switch(PLACEMENT){
       case 1:
         PlaceTopLeftPartition();
+        break;
       case 2:
         PlaceTopRightPartition();
+        break;
       case 3:
         PlaceBottomLeftPartition();
+        break;
       case 4:
         PlaceBottomRightPartition();
+        break;
     }
-    //for(int a=0;a<moduleList.size())
+    if(PLACEMENT==4)
+      GenerateFinalPlacementFile(moduleList);
+    /*for(int a=0;a<moduleList.size();a++)
+      System.out.println("Module name: "+moduleList.get(a).moduleName+" X: "+moduleList.get(a).positionX+" Y: "+moduleList.get(a).positionY);*/
   }
   public void GetComponentSize(List<PcbModules>moduleList){
   /*This method will calculate component width, height from module list and will add that in component size list*/ 
@@ -356,7 +364,7 @@ public class ComponentPlacer {
           compSizeList.get(count).height = compSizeList.get(count).height - compSizeList.get(count).width;
         }
       }
-    }	  
+    }	
   }
   boolean checkAvailablityBottomRight(int a, int b, int width, int height){
     int count = 0;
@@ -377,5 +385,58 @@ public class ComponentPlacer {
     }
     else
       return false;
+  }
+  void GenerateFinalPlacementFile(List<PcbModules>moduleList){
+    try{
+      PcbParser pp = new PcbParser();
+      BufferedReader br;
+      FileInputStream fstream;
+      Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("placed_"+pcbFile),"utf-8"));
+      float posX=0, posY=0;
+      int angleZ=0;
+      String strLine=null,moduleName=null;
+      List<String> temp = new ArrayList<String>();
+      fstream = new FileInputStream(pcbFile);
+      br = new BufferedReader(new InputStreamReader(fstream));  
+      while ((strLine = br.readLine()) != null) {
+        if(strLine.contains("(module ")){ 
+          writer.write(strLine+"\n");
+          br.readLine();
+          while(true){
+            strLine = br.readLine();
+            temp.add(strLine);
+            if(strLine.contains("fp_text reference")){
+              pp.strLine = strLine;
+              moduleName = pp.getSubstring("reference ",' ',10);            
+              for(int i=0;i<moduleList.size();i++){
+                if(moduleList.get(i).moduleName.equals(moduleName)){
+                  posX=moduleList.get(i).positionX;
+                  posY=moduleList.get(i).positionY;
+                  if(moduleList.get(i).angleZ > 0)
+                    angleZ = moduleList.get(i).angleZ;
+                  break;
+                }
+              }
+              break;
+            }
+          }
+          if(angleZ>0){
+            writer.write("    (at "+posX+" "+posY+" "+angleZ+")"+"\n");
+          }
+          else
+            writer.write("    (at "+posX+" "+posY+")"+"\n");
+          while(!temp.isEmpty()){
+            writer.write(temp.get(0)+"\n");
+            temp.remove(0);
+          }
+        }
+        else
+          writer.write(strLine+"\n");  
+      }
+      br.close();
+      writer.close();
+      }catch (Exception e){
+        System.err.println("Error: " + e.getMessage());
+      }
   }
 }
