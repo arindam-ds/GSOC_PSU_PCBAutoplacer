@@ -7,4 +7,5 @@ public class ComponentSize {
   int size;
   float compCenterX;
   float compCenterY;
+  int angleZ;
 }

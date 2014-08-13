@@ -19,7 +19,7 @@ public class PcbParser {
   public List<Float> dimensionY = new ArrayList<Float>();
   public int layerId=0, numberOfNets=0, netId=0, moduleId=0, angleZ=0, numIndex=0, padAngleZ=0, padId=0, READFLAG=1;
   public float positionX=0.00f, positionY=0.00f, componentWidth=0.00f,componentHeight=0.00f, padX=0.00f, padY=0.00f,padWidth=0.00f, padHeight=0.00f;
-  public float pcbBoardXmin, pcbBoardXmax, pcbBoardYmin, pcbBoardYmax;
+  public float pcbBoardXmin, pcbBoardXmax, pcbBoardYmin, pcbBoardYmax, radiusX=0, radiusY=0;
   boolean isLayer = true, isNets = true;
   BufferedReader br;
   FileInputStream fstream;
@@ -136,8 +136,12 @@ public class PcbParser {
         }
         if(strLine.contains("fp_circle")){
           position = getSubstring("(end ",')', 5).split(" ");
-          widths.add(Float.parseFloat(position[0]));
-          heights.add(Float.parseFloat(position[1]));
+          radiusX=Float.parseFloat(position[0]);
+          radiusY=Float.parseFloat(position[1]);
+          radiusX=radiusX*radiusX;
+          radiusY=radiusY*radiusY;
+          widths.add((float) (2*(Math.sqrt(radiusX+radiusY))));
+          heights.add((float) (2*(Math.sqrt(radiusX+radiusY))));
         }
         if(strLine.contains("pad")){
           pads = new Pads();
@@ -178,7 +182,7 @@ public class PcbParser {
       }
       else
         modules.componentWidth = widths.get(widths.size()-1) - widths.get(0);
-      if(widths.get(heights.size()-1) == heights.get(0)){
+      if(heights.get(heights.size()-1) == heights.get(0)){
         modules.componentHeight = heights.get(0);
       }
       else

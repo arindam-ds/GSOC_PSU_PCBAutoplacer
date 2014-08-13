@@ -45,10 +45,11 @@ public class ComponentPlacer {
         PlaceBottomRightPartition();
         break;
     }
-    if(PLACEMENT==4)
+    if(PLACEMENT==4){
       GenerateFinalPlacementFile(moduleList);
-    /*for(int a=0;a<moduleList.size();a++)
-      System.out.println("Module name: "+moduleList.get(a).moduleName+" X: "+moduleList.get(a).positionX+" Y: "+moduleList.get(a).positionY);*/
+    for(int a=0;a<moduleList.size();a++)
+      System.out.println("Module name: "+moduleList.get(a).moduleName+" X: "+moduleList.get(a).positionX+" Y: "+moduleList.get(a).positionY+" Width: "+moduleList.get(a).componentWidth+" Height: "+moduleList.get(a).componentHeight);
+    }
   }
   public void GetComponentSize(List<PcbModules>moduleList){
   /*This method will calculate component width, height from module list and will add that in component size list*/ 
@@ -62,6 +63,7 @@ public class ComponentPlacer {
           cs.height = (int) Math.ceil(moduleList.get(j).componentHeight) + 2;
           cs.size = cs.width * cs.height;
           cs.compCenterX = cs.compCenterY = 0.00f;
+          cs.angleZ = moduleList.get(j).angleZ;
           compSizeList.add(cs);
           break;
         }
@@ -135,6 +137,7 @@ public class ComponentPlacer {
             if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
               moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
               moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
+              moduleList.get(m).angleZ = compSizeList.get(count).angleZ;
               break;
             }
           }
@@ -148,6 +151,7 @@ public class ComponentPlacer {
           compSizeList.get(count).height = compSizeList.get(count).height + compSizeList.get(count).width;
           compSizeList.get(count).width = compSizeList.get(count).height - compSizeList.get(count).width;
           compSizeList.get(count).height = compSizeList.get(count).height - compSizeList.get(count).width;
+          compSizeList.get(count).angleZ = compSizeList.get(count).angleZ + 90;
         }
       }
     }
@@ -206,6 +210,7 @@ public class ComponentPlacer {
             if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
               moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
               moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
+              moduleList.get(m).angleZ = compSizeList.get(count).angleZ;
               break;
             }
           }
@@ -219,6 +224,7 @@ public class ComponentPlacer {
           compSizeList.get(count).height = compSizeList.get(count).height + compSizeList.get(count).width;
           compSizeList.get(count).width = compSizeList.get(count).height - compSizeList.get(count).width;
           compSizeList.get(count).height = compSizeList.get(count).height - compSizeList.get(count).width;
+          compSizeList.get(count).angleZ = compSizeList.get(count).angleZ + 90;
         }
       }
     }	  
@@ -278,6 +284,7 @@ public class ComponentPlacer {
             if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
               moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
               moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
+              moduleList.get(m).angleZ = compSizeList.get(count).angleZ;
               break;
             }
           }
@@ -291,6 +298,7 @@ public class ComponentPlacer {
           compSizeList.get(count).height = compSizeList.get(count).height + compSizeList.get(count).width;
           compSizeList.get(count).width = compSizeList.get(count).height - compSizeList.get(count).width;
           compSizeList.get(count).height = compSizeList.get(count).height - compSizeList.get(count).width;
+          compSizeList.get(count).angleZ = compSizeList.get(count).angleZ + 90;
         }
       }
     }   	  
@@ -330,7 +338,7 @@ public class ComponentPlacer {
             ret = checkAvailablityBottomRight(a,b,compSizeList.get(count).width,compSizeList.get(count).height);
           }
           if(ret == true){
-            compSizeList.get(count).compCenterX = (x - compSizeList.get(count).width/2);
+            compSizeList.get(count).compCenterX = (x + compSizeList.get(count).width/2);
             compSizeList.get(count).compCenterY = (y + compSizeList.get(count).height/2);
             PLACED=1;
             break;
@@ -349,6 +357,7 @@ public class ComponentPlacer {
             if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
               moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
               moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
+              moduleList.get(m).angleZ = compSizeList.get(count).angleZ;
               break;
             }
           }
@@ -362,6 +371,7 @@ public class ComponentPlacer {
           compSizeList.get(count).height = compSizeList.get(count).height + compSizeList.get(count).width;
           compSizeList.get(count).width = compSizeList.get(count).height - compSizeList.get(count).width;
           compSizeList.get(count).height = compSizeList.get(count).height - compSizeList.get(count).width;
+          compSizeList.get(count).angleZ = compSizeList.get(count).angleZ + 90;
         }
       }
     }	
