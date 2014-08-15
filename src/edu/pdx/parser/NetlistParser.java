@@ -64,7 +64,6 @@ public class NetlistParser {
             }
             ++end;
           }
-          //System.out.println(strLine.substring(start, end));
           libPartName = strLine.substring(start, end);	
           numOfPins=0;
         }
@@ -132,36 +131,8 @@ public class NetlistParser {
            }
          }
        }
-       /*System.out.println ("Net--To--Components");
-       for(int j=0;j<compToNetList.size();j++){
-         System.out.println(compToNetList.get(j).nameOfComp);
-         for(int k=0;k<compToNetList.get(j).netIdList.size();k++){
-           System.out.println(compToNetList.get(j).netIdList.get(k));   	  
-         }
-       }
-       System.out.println ("Net--To--Components--ENDS");*/
     } catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
       }
    }
- /* public void getComponentToNet(){
-	ComponentToNet compToNet = new ComponentToNet();
-    for(int i=0;i<compList.size();i++){
-    compToNet.nameOfComp = compList.get(i).nameOfComp;
-      for(int j=0;j<netList.size();j++){
-        if(netList.get(j).compName.equals(compList.get(i).nameOfComp)){
-          compToNet.netIdList.add(netList.get(j).netId);
-        }
-      }
-    compToNetList.add(compToNet);
-    }
-    System.out.println ("Get--To--Components");
-    for(int j=0;j<compToNetList.size();j++){
-      System.out.println(compToNetList.get(j).nameOfComp);
-      for(int k=0;k<compToNetList.get(j).netIdList.size();k++){
-        System.out.println(compToNetList.get(j).netIdList.get(k));   	  
-      }
-    }
-    System.out.println ("Get--To--Components--ENDS");
-  }*/
 }   

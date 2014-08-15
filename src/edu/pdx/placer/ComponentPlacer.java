@@ -47,8 +47,6 @@ public class ComponentPlacer {
     }
     if(PLACEMENT==4){
       GenerateFinalPlacementFile(moduleList);
-    for(int a=0;a<moduleList.size();a++)
-      System.out.println("Module name: "+moduleList.get(a).moduleName+" X: "+moduleList.get(a).positionX+" Y: "+moduleList.get(a).positionY+" Width: "+moduleList.get(a).componentWidth+" Height: "+moduleList.get(a).componentHeight);
     }
   }
   public void GetComponentSize(List<PcbModules>moduleList){

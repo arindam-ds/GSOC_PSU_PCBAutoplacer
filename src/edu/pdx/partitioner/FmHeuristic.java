@@ -22,7 +22,6 @@ public class FmHeuristic {
   public List<String> topRightBucket = new ArrayList<String>();
   public List<String> bottomRightBucket = new ArrayList<String>();
   List<ComponentGain> compGainList = new ArrayList<ComponentGain>();
-  //float verticalCutX = pcbparser.pcbBoardXmin +((pcbparser.pcbBoardXmax-pcbparser.pcbBoardXmin)/2);
   public FmHeuristic(String netlistFile, String pcbFile){
     this.netlistFile = netlistFile;
     this.pcbFile = pcbFile;
@@ -101,7 +100,6 @@ public class FmHeuristic {
     	tempFirstBucket.clear();
     	tempSecondBucket.clear();
     	for(int j=0;j<netparser.netList.size();j++){
-          //System.out.println(netList.get(j).netId+" "+netList.get(j).compName+" "+netList.get(j).pin);
     	  if(netparser.netList.get(j).netId == i){
             if(firstBucket.contains(netparser.netList.get(j).compName)){
               tempFirstBucket.add(netparser.netList.get(j).compName);
@@ -193,9 +191,6 @@ public class FmHeuristic {
     firstBucket.addAll(prevFirstBucket);
     secondBucket.clear();
     secondBucket.addAll(prevSecondBucket);
-    /*for(int i=0;i<compGainList.size();i++){
-      System.out.println("FmH Component: "+compGainList.get(i).nameOfComp+" FmH Gain: "+compGainList.get(i).gain);	
-    }*/
     }catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
      }
@@ -206,7 +201,7 @@ public class FmHeuristic {
     listName.addAll(setItem);
     return listName;
   }
-  public float CalculateHpwl(){
+  public float CalculateHpwl(String pcbFile){
     float minX, maxX, minY, maxY, hpwl=0;
     PcbParser pcbparser = new PcbParser(pcbFile);
     pcbparser.pcbParse();

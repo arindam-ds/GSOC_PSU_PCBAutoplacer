@@ -168,7 +168,6 @@ public class PcbParser {
           }
           else
             READFLAG=0;
-          //PcbNets pcbNets = new PcbNets(netId, netName);
           pads.net = new PcbNets(netId, netName);
           modules.pad.add(pads);
         }
