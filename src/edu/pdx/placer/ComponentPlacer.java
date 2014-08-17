@@ -57,8 +57,8 @@ public class ComponentPlacer {
       for(int j=0; j<moduleList.size();j++){
         if(componentList.get(i).equals(moduleList.get(j).moduleName)){
           cs.compName = componentList.get(i);
-          cs.width = (int) Math.ceil(moduleList.get(j).componentWidth) + 2;//2 is added to spare white space
-          cs.height = (int) Math.ceil(moduleList.get(j).componentHeight) + 2;
+          cs.width = (int) Math.ceil(moduleList.get(j).componentWidth) + 3;//2 is added to spare white space
+          cs.height = (int) Math.ceil(moduleList.get(j).componentHeight) + 3;
           cs.size = cs.width * cs.height;
           cs.compCenterX = cs.compCenterY = 0.00f;
           cs.angleZ = moduleList.get(j).angleZ;
@@ -103,10 +103,11 @@ public class ComponentPlacer {
   }
   public void PlaceTopLeftPartition(){
 	int startX = (int)centerOfPcbX, endX = (int)pcbBoardXmin, startY = (int)centerOfPcbY, endY = (int)pcbBoardYmin; 
-	int count = 0, PLACED, ROTATE=0, a, b;
+	int count = 0, PLACED, ROTATE, a, b;
 	boolean ret;
     while(!compSizeList.isEmpty()){
       PLACED=0;
+      ROTATE=0;
       for(int y=startY; y>=endY; y--){
         for(int x=startX; x>=endX; x--){
           ret = false;
@@ -135,7 +136,7 @@ public class ComponentPlacer {
             if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
               moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
               moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
-              moduleList.get(m).angleZ = compSizeList.get(count).angleZ;
+              moduleList.get(m).angleZ = moduleList.get(m).angleZ+compSizeList.get(count).angleZ;
               break;
             }
           }
@@ -176,10 +177,11 @@ public class ComponentPlacer {
   }
   public void PlaceTopRightPartition(){
     int startX = 1+(int)centerOfPcbX, endX = (int)pcbBoardXmax, startY = (int)centerOfPcbY, endY = (int)pcbBoardYmin; 
-    int count = 0, PLACED, ROTATE=0, a, b;
+    int count = 0, PLACED, ROTATE, a, b;
     boolean ret;
 	while(!compSizeList.isEmpty()){
       PLACED=0;
+      ROTATE=0;
       for(int y=startY; y>=endY; y--){
         for(int x=startX; x<=endX; x++){
           ret = false;
@@ -208,7 +210,7 @@ public class ComponentPlacer {
             if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
               moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
               moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
-              moduleList.get(m).angleZ = compSizeList.get(count).angleZ;
+              moduleList.get(m).angleZ = moduleList.get(m).angleZ+compSizeList.get(count).angleZ;
               break;
             }
           }
@@ -249,10 +251,11 @@ public class ComponentPlacer {
   }
   public void PlaceBottomLeftPartition(){
     int startX = (int)centerOfPcbX-1, endX = (int)pcbBoardXmin, startY = 1+(int)centerOfPcbY, endY = (int)pcbBoardYmax;
-    int count = 0, PLACED, ROTATE=0, a, b;
+    int count = 0, PLACED, ROTATE, a, b;
     boolean ret;
     while(!compSizeList.isEmpty()){
       PLACED=0;
+      ROTATE=0;
       for(int y=startY; y<=endY; y++){
         for(int x=startX; x>=endX; x--){
           ret = false;
@@ -282,7 +285,7 @@ public class ComponentPlacer {
             if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
               moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
               moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
-              moduleList.get(m).angleZ = compSizeList.get(count).angleZ;
+              moduleList.get(m).angleZ = moduleList.get(m).angleZ+compSizeList.get(count).angleZ;
               break;
             }
           }
@@ -323,10 +326,11 @@ public class ComponentPlacer {
   }
   public void PlaceBottomRightPartition(){
     int startX = 1+(int)centerOfPcbX, endX = (int)pcbBoardXmax, startY = 1+(int)centerOfPcbY, endY = (int)pcbBoardYmax;
-    int count = 0, PLACED, ROTATE=0, a, b;
+    int count = 0, PLACED, ROTATE, a, b;
     boolean ret;
     while(!compSizeList.isEmpty()){
       PLACED=0;
+      ROTATE=0;
       for(int y=startY; y<=endY; y++){
         for(int x=startX; x<=endX; x++){
           ret = false;
@@ -355,7 +359,7 @@ public class ComponentPlacer {
             if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
               moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
               moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
-              moduleList.get(m).angleZ = compSizeList.get(count).angleZ;
+              moduleList.get(m).angleZ = moduleList.get(m).angleZ+compSizeList.get(count).angleZ;
               break;
             }
           }
@@ -430,6 +434,7 @@ public class ComponentPlacer {
           }
           if(angleZ>0){
             writer.write("    (at "+posX+" "+posY+" "+angleZ+")"+"\n");
+            angleZ=0;
           }
           else
             writer.write("    (at "+posX+" "+posY+")"+"\n");
