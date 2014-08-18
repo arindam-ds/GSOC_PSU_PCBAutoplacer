@@ -28,26 +28,15 @@ public class FmHeuristic {
   }
   public void FmVerticalPartitioner(){
     try{
-    NetlistParser netparser = new NetlistParser(netlistFile);
-	netparser.parse();  
-	for(int i=0;i<(netparser.numberOfComponents/2);i++){
-	  leftBucket.add(netparser.compList.get(i).nameOfComp);	
-	}
-	for(int i=(netparser.numberOfComponents/2);i<netparser.numberOfComponents;i++){
-	  rightBucket.add(netparser.compList.get(i).nameOfComp);	
-	}
-	//testing
-	/*
-	for(int j=0;j<leftBucket.size();j++)
-	  System.out.println("test left "+leftBucket.get(j));
-	for(int j=0;j<rightBucket.size();j++)
-	  System.out.println("test right "+rightBucket.get(j));*/
-	CorePartitioner(leftBucket, rightBucket);
-	/*for(int j=0;j<leftBucket.size();j++)
-      System.out.println("test left after:"+leftBucket.get(j));
-    for(int j=0;j<rightBucket.size();j++)
-      System.out.println("test right after:"+rightBucket.get(j));
-      */
+      NetlistParser netparser = new NetlistParser(netlistFile);
+	  netparser.parse();  
+	  for(int i=0;i<(netparser.numberOfComponents/2);i++){
+	    leftBucket.add(netparser.compList.get(i).nameOfComp);	
+	  }
+	  for(int i=(netparser.numberOfComponents/2);i<netparser.numberOfComponents;i++){
+	    rightBucket.add(netparser.compList.get(i).nameOfComp);	
+	  }
+	  CorePartitioner(leftBucket, rightBucket);
     }catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
      }
