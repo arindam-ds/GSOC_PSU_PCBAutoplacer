@@ -1,3 +1,10 @@
+/*
+ * Copyright 2014 Arindam Bannerjee
+ * This work is distributed under the terms of the "MIT license". Please see the file
+ * LICENSE in this distribution for license terms.
+ *
+ */
+
 package edu.pdx.placer;
 
 import java.util.*;
@@ -25,6 +32,7 @@ public class ComponentPlacer {
   }
   public void Placer(){
     try{
+      //System.out.println(grid.length);
       GetComponentSize(moduleList);
       ArrangeComponents();
       PcbParser pp = new PcbParser(pcbFile);
@@ -62,8 +70,8 @@ public class ComponentPlacer {
         for(int j=0; j<moduleList.size();j++){
           if(componentList.get(i).equals(moduleList.get(j).moduleName)){
             cs.compName = componentList.get(i);
-            cs.width = (int) Math.ceil(moduleList.get(j).componentWidth) + 3;//2 is added to spare white space
-            cs.height = (int) Math.ceil(moduleList.get(j).componentHeight) + 3;
+            cs.width = (int) Math.ceil(moduleList.get(j).componentWidth) + 2;//2 is added to spare white space
+            cs.height = (int) Math.ceil(moduleList.get(j).componentHeight) + 2;
             cs.size = cs.width * cs.height;
             cs.compCenterX = cs.compCenterY = 0.00f;
             cs.angleZ = moduleList.get(j).angleZ;
