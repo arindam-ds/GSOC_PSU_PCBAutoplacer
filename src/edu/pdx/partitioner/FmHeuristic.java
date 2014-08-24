@@ -1,6 +1,10 @@
-/**
- * 
- */
+/*
+* Copyright 2014 Arindam Bannerjee
+* This work is distributed under the terms of the "MIT license". Please see the file
+* LICENSE in this distribution for license terms.
+*
+*/
+
 package edu.pdx.partitioner;
 
 import java.util.*;
@@ -12,6 +16,7 @@ import edu.pdx.parser.*;
  * @author Arindam Banerjee
  *
  */
+
 public class FmHeuristic {
   String netlistFile="";
   String pcbFile="";
