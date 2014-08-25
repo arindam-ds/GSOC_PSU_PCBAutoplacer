@@ -9,13 +9,22 @@ package edu.pdx.parser;
 
 public class Nets {
   
-  public int netId;
-  public String compName;
-  public int pin;
+  private int netId;
+  private String compName;
+  private int pin;
 
   public Nets (int Id, String comp, int pin) {
     this.netId = Id;
     this.compName = comp;
     this.pin = pin;
+  }
+  public String getCompName(){
+    return compName;
+  }
+  public int getNetId(){
+    return netId;
+  }
+  public int getPin(){
+    return pin;
   }
 }

@@ -73,8 +73,8 @@ public class NetlistParser {
           numOfPins++;
         }
         for (int j=0;j<compList.size();j++) {
-          if (compList.get(j).nameOfCompPart.equalsIgnoreCase(libPartName) && numOfPins>0) {
-            compList.get(j).numOfPin = numOfPins;
+          if (compList.get(j).getNameOfCompPart().equalsIgnoreCase(libPartName) && numOfPins>0) {
+            compList.get(j).setNumOfPin(numOfPins);
           }
         }
         if (strLine.contains("(net ")) {
@@ -108,20 +108,20 @@ public class NetlistParser {
        ComponentToNet compToNet;
        for(int i=0;i<compList.size();i++){
          compToNet = new ComponentToNet();
-         compToNet.nameOfComp = compList.get(i).nameOfComp;
-         compToNet.netIdList = new ArrayList<Integer>();
+         compToNet.setNameOfComp(compList.get(i).getNameOfComp());
+         compToNet.setNetIdList(new ArrayList<Integer>());
          for(int j=0;j<netList.size();j++){
-           if(netList.get(j).compName.equals(compList.get(i).nameOfComp)){
-             compToNet.netIdList.add(netList.get(j).netId);
+           if(netList.get(j).getCompName().equals(compList.get(i).getNameOfComp())){
+             compToNet.getNetIdList().add(netList.get(j).getNetId());
            }
          }
        compToNetList.add(compToNet);
        }
        /*removing duplicate entries from ComponentToNet List*/
        for(int i=0; i<compToNetList.size(); i++){
-         for(int j=0; j<compToNetList.get(i).netIdList.size()-1; j++){
-           if(compToNetList.get(i).netIdList.get(j)==compToNetList.get(i).netIdList.get(j+1)){
-             compToNetList.get(i).netIdList.remove(j+1);
+         for(int j=0; j<compToNetList.get(i).getNetIdList().size()-1; j++){
+           if(compToNetList.get(i).getNetIdList().get(j)==compToNetList.get(i).getNetIdList().get(j+1)){
+             compToNetList.get(i).getNetIdList().remove(j+1);
              j--;
            }
          }

@@ -10,6 +10,19 @@ package edu.pdx.parser;
 import java.util.*;
 
 public class ComponentToNet {
-  public String nameOfComp;
-  public List<Integer> netIdList;
+  private String nameOfComp;
+  private List<Integer> netIdList;
+  
+  public String getNameOfComp(){
+    return nameOfComp;
+  }
+  public void setNameOfComp(String nameOfComp){
+    this.nameOfComp = nameOfComp;
+  }
+  public List<Integer> getNetIdList(){
+    return netIdList;
+  }
+  public void setNetIdList(List<Integer> netIdList){
+    this.netIdList = netIdList;
+  }
 }

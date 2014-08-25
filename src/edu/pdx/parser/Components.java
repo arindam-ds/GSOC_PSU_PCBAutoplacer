@@ -9,13 +9,25 @@ package edu.pdx.parser;
 
 public class Components {
 
-  public String nameOfComp;
-  public String nameOfCompPart;
-  public int numOfPin;
+  private String nameOfComp;
+  private String nameOfCompPart;
+  private int numOfPin;
 
   public Components (String compName, String partName, int pin) {
     this.nameOfComp = compName;
     this.nameOfCompPart = partName;	
     this.numOfPin = pin;
+  }
+  public String getNameOfComp(){
+    return nameOfComp;
+  }
+  public String getNameOfCompPart(){
+    return nameOfCompPart;
+  }
+  public int getNumOfPin(){
+    return numOfPin;
+  }
+  public void setNumOfPin(int numOfPin){
+    this.numOfPin = numOfPin;
   }
 }

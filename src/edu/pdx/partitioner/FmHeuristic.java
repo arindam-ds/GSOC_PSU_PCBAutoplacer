@@ -36,10 +36,10 @@ public class FmHeuristic {
       NetlistParser netparser = new NetlistParser(netlistFile);
 	  netparser.parse();  
 	  for(int i=0;i<(netparser.numberOfComponents/2);i++){
-	    leftBucket.add(netparser.compList.get(i).nameOfComp);	
+	    leftBucket.add(netparser.compList.get(i).getNameOfComp());	
 	  }
 	  for(int i=(netparser.numberOfComponents/2);i<netparser.numberOfComponents;i++){
-	    rightBucket.add(netparser.compList.get(i).nameOfComp);	
+	    rightBucket.add(netparser.compList.get(i).getNameOfComp());	
 	  }
 	  CorePartitioner(leftBucket, rightBucket);
     }catch (Exception e) {
@@ -88,18 +88,18 @@ public class FmHeuristic {
       /*Gain calculation*/
       /*Initialize compGainList with zero gain for each component for each pass*/
       for(int i=0; i<netparser.compList.size(); i++){
-        compGainList.add(new ComponentGain(netparser.compList.get(i).nameOfComp, 0));
+        compGainList.add(new ComponentGain(netparser.compList.get(i).getNameOfComp(), 0));
       }
       for(int i=1;i<=netparser.netId;i++){ //netId = number of nets
     	tempFirstBucket.clear();
     	tempSecondBucket.clear();
     	for(int j=0;j<netparser.netList.size();j++){
-    	  if(netparser.netList.get(j).netId == i){
-            if(firstBucket.contains(netparser.netList.get(j).compName)){
-              tempFirstBucket.add(netparser.netList.get(j).compName);
+    	  if(netparser.netList.get(j).getNetId() == i){
+            if(firstBucket.contains(netparser.netList.get(j).getCompName())){
+              tempFirstBucket.add(netparser.netList.get(j).getCompName());
             }
             else{
-              tempSecondBucket.add(netparser.netList.get(j).compName);
+              tempSecondBucket.add(netparser.netList.get(j).getCompName());
             }
     	  }
     	}
@@ -205,11 +205,11 @@ public class FmHeuristic {
       minX = minY = 9999.99f;
       maxX = maxY = 0;
       for(int j=0; j<netparser.netList.size(); j++){
-        if(netparser.netList.get(j).netId>i)
+        if(netparser.netList.get(j).getNetId()>i)
           break; //break from for-j
-        if(netparser.netList.get(j).netId==i){
+        if(netparser.netList.get(j).getNetId()==i){
           for(int k=0; k<pcbparser.moduleList.size(); k++){
-            if(netparser.netList.get(j).compName.equals(pcbparser.moduleList.get(k).moduleName)){
+            if(netparser.netList.get(j).getCompName().equals(pcbparser.moduleList.get(k).moduleName)){
               if(pcbparser.moduleList.get(k).positionX < minX){
                 minX = pcbparser.moduleList.get(k).positionX;
               }
