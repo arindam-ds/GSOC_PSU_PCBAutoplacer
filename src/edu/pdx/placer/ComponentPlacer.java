@@ -30,7 +30,7 @@ public class ComponentPlacer {
     this.moduleList = moduleList;
     this.PLACEMENT = PLACEMENT;
   }
-  public void Placer(){
+  public void placer(){
     try{
       //System.out.println(grid.length);
       GetComponentSize(moduleList);

@@ -35,13 +35,13 @@ public class Placer {
       System.out.println("HPWL before placement: "+hpwl);
       ComponentPlacer cp;
       cp = new ComponentPlacer(args[1], fmh.topLeftBucket, p.moduleList, 1);
-      cp.Placer();
+      cp.placer();
       cp = new ComponentPlacer(args[1], fmh.topRightBucket, p.moduleList, 2);
-      cp.Placer();
+      cp.placer();
       cp = new ComponentPlacer(args[1], fmh.bottomLeftBucket, p.moduleList, 3);
-      cp.Placer();
+      cp.placer();
       cp = new ComponentPlacer(args[1], fmh.bottomRightBucket, p.moduleList, 4);
-      cp.Placer();
+      cp.placer();
       hpwl = fmh.CalculateHpwl("placed_"+args[1]);
       System.out.println("HPWL after placement: "+hpwl);
     }catch(Exception e){

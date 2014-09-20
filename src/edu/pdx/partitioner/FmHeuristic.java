@@ -109,8 +109,8 @@ public class FmHeuristic {
     	if(tempFirstBucket.size()==1){
           //gain++
           for(int m=0; m<=compGainList.size();m++){
-            if(compGainList.get(m).nameOfComp.equals(tempFirstBucket.get(0))){
-              compGainList.get(m).gain++;
+            if(compGainList.get(m).getNameOfComp().equals(tempFirstBucket.get(0))){
+              compGainList.get(m).setGain(compGainList.get(m).getGain()+1);
               break;
             }
     	  }
@@ -118,8 +118,8 @@ public class FmHeuristic {
     	if(tempSecondBucket.size()==1){
           //gain++
           for(int m=0; m<=compGainList.size();m++){
-            if(compGainList.get(m).nameOfComp.equals(tempSecondBucket.get(0))){
-              compGainList.get(m).gain++;
+            if(compGainList.get(m).getNameOfComp().equals(tempSecondBucket.get(0))){
+              compGainList.get(m).setGain(compGainList.get(m).getGain()+1);
               break;
             }
       	  }
@@ -128,8 +128,8 @@ public class FmHeuristic {
           //gain--
           for(int k=0; k<tempSecondBucket.size(); k++){
             for(int m=0; m<compGainList.size(); m++){
-              if(compGainList.get(m).nameOfComp.equals(tempSecondBucket.get(k))){
-                compGainList.get(m).gain--;
+              if(compGainList.get(m).getNameOfComp().equals(tempSecondBucket.get(k))){
+                compGainList.get(m).setGain(compGainList.get(m).getGain()-1);
               }
             }
           }
@@ -138,8 +138,8 @@ public class FmHeuristic {
           //gain--
           for(int k=0; k<tempFirstBucket.size(); k++){
             for(int m=0; m<compGainList.size(); m++){
-              if(compGainList.get(m).nameOfComp.equals(tempFirstBucket.get(k))){
-                compGainList.get(m).gain--;
+              if(compGainList.get(m).getNameOfComp().equals(tempFirstBucket.get(k))){
+                compGainList.get(m).setGain(compGainList.get(m).getGain()-1);
               }
             }
           }
@@ -149,36 +149,36 @@ public class FmHeuristic {
       ComponentGain temp = new ComponentGain();
       for(int pass=compGainList.size()-1;pass>=0;pass--){
         for(int i=0;i<pass;i++){
-          if(compGainList.get(i).gain<compGainList.get(i+1).gain){
-            temp.nameOfComp = compGainList.get(i).nameOfComp;
-		    temp.gain = compGainList.get(i).gain;
-		    compGainList.get(i).nameOfComp = compGainList.get(i+1).nameOfComp;
-		    compGainList.get(i).gain = compGainList.get(i+1).gain;
-            compGainList.get(i+1).nameOfComp = temp.nameOfComp;
-		    compGainList.get(i+1).gain = temp.gain;
+          if(compGainList.get(i).getGain()<compGainList.get(i+1).getGain()){
+            temp.setNameOfComp(compGainList.get(i).getNameOfComp());
+		    temp.setGain(compGainList.get(i).getGain());
+		    compGainList.get(i).setNameOfComp(compGainList.get(i+1).getNameOfComp());
+		    compGainList.get(i).setGain(compGainList.get(i+1).getGain());
+            compGainList.get(i+1).setNameOfComp(temp.getNameOfComp());
+		    compGainList.get(i+1).setGain(temp.getGain());
 		  }
 		}
       }
       /*swap the nodes considering area constraint*/
       for(int i=0; i<compGainList.size(); i++){
-        if(firstBucket.contains(compGainList.get(i).nameOfComp)){
+        if(firstBucket.contains(compGainList.get(i).getNameOfComp())){
           if((firstBucket.size()-1)>=areaConstraintMin){
-            firstBucket.remove(compGainList.get(i).nameOfComp);
-		    secondBucket.add(compGainList.get(i).nameOfComp);
+            firstBucket.remove(compGainList.get(i).getNameOfComp());
+		    secondBucket.add(compGainList.get(i).getNameOfComp());
 		    break;
 		  }          
 		}
 		else{
 		  if((secondBucket.size()-1)>=areaConstraintMin){
-		    secondBucket.remove(compGainList.get(i).nameOfComp);
-		    firstBucket.add(compGainList.get(i).nameOfComp);
+		    secondBucket.remove(compGainList.get(i).getNameOfComp());
+		    firstBucket.add(compGainList.get(i).getNameOfComp());
 		    break;
 		  }	
         }      
 	  }
       /*calculate total gain for current combination*/
 	  for(int i=0;i<compGainList.size();i++){
-        totalCurrentGain = totalCurrentGain + compGainList.get(i).gain;
+        totalCurrentGain = totalCurrentGain + compGainList.get(i).getGain();
       }
 	}//while loop ends 
     firstBucket.clear();
