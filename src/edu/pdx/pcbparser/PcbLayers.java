@@ -14,9 +14,9 @@ package edu.pdx.pcbparser;
 
 public class PcbLayers {
   
-  int layerId;
-  String layerName;
-  String layerType;
+  private int layerId;
+  private String layerName;
+  private String layerType;
   
   public PcbLayers(int layerId, String layerName, String layerType){
     this.layerId = layerId;

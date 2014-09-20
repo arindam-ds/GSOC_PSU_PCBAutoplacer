@@ -152,15 +152,15 @@ public class PcbParser {
         }
         if(strLine.contains("pad")){
           pads = new Pads();
-          pads.padId = Integer.parseInt(getSubstring("(pad ", ' ', 5));
+          pads.setPadId(Integer.parseInt(getSubstring("(pad ", ' ', 5)));
           coords = getSubstring("(at ", ')', 4).split(" ");
-          pads.padX = Float.parseFloat(coords[0]);
-          pads.padY = Float.parseFloat(coords[1]);
+          pads.setPadX(Float.parseFloat(coords[0]));
+          pads.setPadY(Float.parseFloat(coords[1]));
           if(coords.length==3)
-            pads.padAngleZ = Integer.parseInt(coords[2]);
+            pads.setPadAngleZ(Integer.parseInt(coords[2]));
           coords = getSubstring("(size ", ')', 6).split(" ");
-          pads.padWidth = Float.parseFloat(coords[0]);
-          pads.padHeight = Float.parseFloat(coords[1]);
+          pads.setPadWidth(Float.parseFloat(coords[0]));
+          pads.setPadHeight(Float.parseFloat(coords[1]));
           strLine = br.readLine();
           strLine = br.readLine();
           padToNet = getSubstring("(net ", ')', 5).split(" ");
@@ -169,13 +169,13 @@ public class PcbParser {
           strLine = br.readLine();
           strLine = br.readLine();
           if(!strLine.contains("pad")){
-            pads.net = new PcbNets(netId, netName);
+            pads.setNet(new PcbNets(netId, netName));
             modules.pad.add(pads);
             break;
           }
           else
             READFLAG=0;
-          pads.net = new PcbNets(netId, netName);
+          pads.setNet(new PcbNets(netId, netName));
           modules.pad.add(pads);
         }
       }//end while(true)		

@@ -14,11 +14,32 @@ package edu.pdx.pcbparser;
 
 public class Pads {
 
-  int padId;
-  float padX;
-  float padY;
-  int padAngleZ;
-  float padWidth;
-  float padHeight;
-  PcbNets net;
+  private int padId;
+  private float padX;
+  private float padY;
+  private int padAngleZ;
+  private float padWidth;
+  private float padHeight;
+  private PcbNets net;
+  public void setPadId(int padId){
+    this.padId = padId;
+  }
+  public void setPadX(float padX){
+    this.padX = padX;
+  }
+  public void setPadY(float padY){
+    this.padY = padY;
+  }
+  public void setPadAngleZ(int angleZ){
+    this.padAngleZ = angleZ;
+  }
+  public void setPadWidth(float padWidth){
+    this.padWidth = padWidth;
+  }
+  public void setPadHeight(float padHeight){
+    this.padHeight = padHeight;
+  }
+  public void setNet(PcbNets net){
+    this.net = net;
+  }
 }
