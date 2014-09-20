@@ -33,35 +33,35 @@ public class ComponentPlacer {
   public void placer(){
     try{
       //System.out.println(grid.length);
-      GetComponentSize(moduleList);
-      ArrangeComponents();
+      getComponentSize(moduleList);
+      arrangeComponents();
       PcbParser pp = new PcbParser(pcbFile);
       pp.pcbParse();
-      SetCenterOfPcb(pp);
-      SetDimensionOfPcb(pp);
+      setCenterOfPcb(pp);
+      setDimensionOfPcb(pp);
       grid = new int[(int)(pcbBoardXmax-pcbBoardXmin)+1][(int)(pcbBoardYmax-pcbBoardYmin)+1];
       switch(PLACEMENT){
         case 1:
-          PlaceTopLeftPartition();
+          placeTopLeftPartition();
           break;
         case 2:
-          PlaceTopRightPartition();
+          placeTopRightPartition();
           break;
         case 3:
-          PlaceBottomLeftPartition();
+          placeBottomLeftPartition();
           break;
         case 4:
-          PlaceBottomRightPartition();
+          placeBottomRightPartition();
           break;
       }
       if(PLACEMENT==4){
-        GenerateFinalPlacementFile(moduleList);
+        generateFinalPlacementFile(moduleList);
       }
     }catch(Exception e){
       System.err.println("Error_: " + e.getMessage());
     }
   }
-  public void GetComponentSize(List<PcbModules>moduleList){
+  public void getComponentSize(List<PcbModules>moduleList){
   /*This method will calculate component width, height from module list and will add that in component size list*/ 
     try{
       compSizeList.clear();
@@ -84,7 +84,7 @@ public class ComponentPlacer {
       System.err.println("Error_: " + e.getMessage());
     }
   }
-  public void ArrangeComponents(){ 
+  public void arrangeComponents(){ 
   /* This method will arrange components in ComponentSize list in decreasing order of their size*/
   /*sorting component gain to get maximum gain */
     try{
@@ -111,7 +111,7 @@ public class ComponentPlacer {
       System.err.println("Error_: " + e.getMessage());
     }
   }
-  public void SetCenterOfPcb(PcbParser pp){
+  public void setCenterOfPcb(PcbParser pp){
     try{
       centerOfPcbX = (float) Math.floor(((pp.pcbBoardXmax - pp.pcbBoardXmin)/2) + pp.pcbBoardXmin);
       centerOfPcbY = (float) Math.floor(((pp.pcbBoardYmax - pp.pcbBoardYmin)/2) + pp.pcbBoardYmin);
@@ -119,7 +119,7 @@ public class ComponentPlacer {
       System.err.println("Error_: " + e.getMessage());
     }
   }
-  public void SetDimensionOfPcb(PcbParser pp){
+  public void setDimensionOfPcb(PcbParser pp){
     try{
       pcbBoardXmax = (float) Math.floor(pp.pcbBoardXmax);
       pcbBoardXmin = (float) Math.floor(pp.pcbBoardXmin);
@@ -129,7 +129,7 @@ public class ComponentPlacer {
       System.err.println("Error_: " + e.getMessage());
     }
   }
-  public void PlaceTopLeftPartition(){
+  public void placeTopLeftPartition(){
 	int startX = (int)centerOfPcbX, endX = (int)pcbBoardXmin, startY = (int)centerOfPcbY, endY = (int)pcbBoardYmin; 
 	int count = 0, PLACED, ROTATE, a, b;
 	boolean ret;
@@ -212,7 +212,7 @@ public class ComponentPlacer {
       return false;
     }
   }
-  public void PlaceTopRightPartition(){
+  public void placeTopRightPartition(){
     int startX = 1+(int)centerOfPcbX, endX = (int)pcbBoardXmax, startY = (int)centerOfPcbY, endY = (int)pcbBoardYmin; 
     int count = 0, PLACED, ROTATE, a, b;
     boolean ret;
@@ -295,7 +295,7 @@ public class ComponentPlacer {
       return false;
     }
   }
-  public void PlaceBottomLeftPartition(){
+  public void placeBottomLeftPartition(){
     int startX = (int)centerOfPcbX-1, endX = (int)pcbBoardXmin, startY = 1+(int)centerOfPcbY, endY = (int)pcbBoardYmax;
     int count = 0, PLACED, ROTATE, a, b;
     boolean ret;
@@ -379,7 +379,7 @@ public class ComponentPlacer {
       return false;
     }
   }
-  public void PlaceBottomRightPartition(){
+  public void placeBottomRightPartition(){
     int startX = 1+(int)centerOfPcbX, endX = (int)pcbBoardXmax, startY = 1+(int)centerOfPcbY, endY = (int)pcbBoardYmax;
     int count = 0, PLACED, ROTATE, a, b;
     boolean ret;
@@ -462,7 +462,7 @@ public class ComponentPlacer {
       return false;
     }
   }
-  void GenerateFinalPlacementFile(List<PcbModules>moduleList){
+  void generateFinalPlacementFile(List<PcbModules>moduleList){
     try{
       PcbParser pp = new PcbParser();
       BufferedReader br;
