@@ -68,13 +68,13 @@ public class ComponentPlacer {
       for(int i=0; i<componentList.size(); i++){
         cs = new ComponentSize();
         for(int j=0; j<moduleList.size();j++){
-          if(componentList.get(i).equals(moduleList.get(j).moduleName)){
+          if(componentList.get(i).equals(moduleList.get(j).getModuleName())){
             cs.compName = componentList.get(i);
-            cs.width = (int) Math.ceil(moduleList.get(j).componentWidth) + 2;//2 is added to spare white space
-            cs.height = (int) Math.ceil(moduleList.get(j).componentHeight) + 2;
+            cs.width = (int) Math.ceil(moduleList.get(j).getComponentWidth()) + 2;//2 is added to spare white space
+            cs.height = (int) Math.ceil(moduleList.get(j).getComponentHeight()) + 2;
             cs.size = cs.width * cs.height;
             cs.compCenterX = cs.compCenterY = 0.00f;
-            cs.angleZ = moduleList.get(j).angleZ;
+            cs.angleZ = moduleList.get(j).getAngleZ();
             compSizeList.add(cs);
             break;
           }
@@ -162,10 +162,10 @@ public class ComponentPlacer {
           else{
             for(int m=0; m<moduleList.size(); m++)
             {
-              if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
-                moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
-                moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
-                moduleList.get(m).angleZ = moduleList.get(m).angleZ+compSizeList.get(count).angleZ;
+              if(compSizeList.get(count).compName.equals(moduleList.get(m).getModuleName())){
+                moduleList.get(m).setPositionX(compSizeList.get(count).compCenterX);
+                moduleList.get(m).setPositionY(compSizeList.get(count).compCenterY);
+                moduleList.get(m).setAngleZ(moduleList.get(m).getAngleZ()+compSizeList.get(count).angleZ);
                 break;
               }
             }
@@ -245,10 +245,10 @@ public class ComponentPlacer {
           else{
             for(int m=0; m<moduleList.size(); m++)
             {
-              if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
-                moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
-                moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
-                moduleList.get(m).angleZ = moduleList.get(m).angleZ+compSizeList.get(count).angleZ;
+              if(compSizeList.get(count).compName.equals(moduleList.get(m).getModuleName())){
+                moduleList.get(m).setPositionX(compSizeList.get(count).compCenterX);
+                moduleList.get(m).setPositionY(compSizeList.get(count).compCenterY);
+                moduleList.get(m).setAngleZ(moduleList.get(m).getAngleZ()+compSizeList.get(count).angleZ);
                 break;
               }
             }
@@ -329,10 +329,10 @@ public class ComponentPlacer {
           else{
             for(int m=0; m<moduleList.size(); m++)
             {
-              if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
-                moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
-                moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
-                moduleList.get(m).angleZ = moduleList.get(m).angleZ+compSizeList.get(count).angleZ;
+              if(compSizeList.get(count).compName.equals(moduleList.get(m).getModuleName())){
+                moduleList.get(m).setPositionX(compSizeList.get(count).compCenterX);
+                moduleList.get(m).setPositionY(compSizeList.get(count).compCenterY);
+                moduleList.get(m).setAngleZ(moduleList.get(m).getAngleZ()+compSizeList.get(count).angleZ);
                 break;
               }
             }
@@ -412,10 +412,10 @@ public class ComponentPlacer {
           else{
             for(int m=0; m<moduleList.size(); m++)
             {
-              if(compSizeList.get(count).compName.equals(moduleList.get(m).moduleName)){
-                moduleList.get(m).positionX = compSizeList.get(count).compCenterX;
-                moduleList.get(m).positionY = compSizeList.get(count).compCenterY;
-                moduleList.get(m).angleZ = moduleList.get(m).angleZ+compSizeList.get(count).angleZ;
+              if(compSizeList.get(count).compName.equals(moduleList.get(m).getModuleName())){
+                moduleList.get(m).setPositionX(compSizeList.get(count).compCenterX);
+                moduleList.get(m).setPositionY(compSizeList.get(count).compCenterY);
+                moduleList.get(m).setAngleZ(moduleList.get(m).getAngleZ()+compSizeList.get(count).angleZ);
                 break;
               }
             }
@@ -485,11 +485,11 @@ public class ComponentPlacer {
               pp.strLine = strLine;
               moduleName = pp.getSubstring("reference ",' ',10);            
               for(int i=0;i<moduleList.size();i++){
-                if(moduleList.get(i).moduleName.equals(moduleName)){
-                  posX=moduleList.get(i).positionX;
-                  posY=moduleList.get(i).positionY;
-                  if(moduleList.get(i).angleZ > 0)
-                    angleZ = moduleList.get(i).angleZ;
+                if(moduleList.get(i).getModuleName().equals(moduleName)){
+                  posX=moduleList.get(i).getPositionX();
+                  posY=moduleList.get(i).getPositionY();
+                  if(moduleList.get(i).getAngleZ() > 0)
+                    angleZ = moduleList.get(i).getAngleZ();
                   break;
                 }
               }

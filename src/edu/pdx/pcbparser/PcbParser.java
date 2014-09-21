@@ -111,24 +111,24 @@ public class PcbParser {
       List<Float> widths = new ArrayList<Float>();
       List<Float> heights = new ArrayList<Float>();
       Pads pads;
-      modules.moduleId = moduleId;
+      modules.setModuleId(moduleId);
       moduleId++;
-      modules.moduleType = getSubstring("(module ",' ',8);
-      modules.moduleLayer = getSubstring("(layer ",')',7); 
+      modules.setModuleType(getSubstring("(module ",' ',8));
+      modules.setModuleLayer(getSubstring("(layer ",')',7)); 
       strLine = br.readLine();
       String[] coords = getSubstring("(at ", ')', 4).split(" ");
       String[] padToNet;
-      modules.positionX = Float.parseFloat(coords[0]);
-      modules.positionY = Float.parseFloat(coords[1]);
+      modules.setPositionX(Float.parseFloat(coords[0]));
+      modules.setPositionY(Float.parseFloat(coords[1]));
       if(coords.length==3)
-        modules.angleZ = Integer.parseInt(coords[2]);
-      modules.pad = new ArrayList<Pads>();
+        modules.setAngleZ(Integer.parseInt(coords[2]));
+      modules.setPad(new ArrayList<Pads>());
       while(true){
         String[] position;
 		if(READFLAG==1)
           strLine = br.readLine();
         if(strLine.contains("fp_text reference")){
-          modules.moduleName = getSubstring("reference ",' ', 10);
+          modules.setModuleName(getSubstring("reference ",' ', 10));
         }
         /*if(strLine.contains("fp_text value")){
           modules.moduleNameValue = getSubstring("value ",' ', 6);
@@ -170,13 +170,13 @@ public class PcbParser {
           strLine = br.readLine();
           if(!strLine.contains("pad")){
             pads.setNet(new PcbNets(netId, netName));
-            modules.pad.add(pads);
+            modules.getPad().add(pads);
             break;
           }
           else
             READFLAG=0;
           pads.setNet(new PcbNets(netId, netName));
-          modules.pad.add(pads);
+          modules.getPad().add(pads);
         }
       }//end while(true)		
       Collections.sort(widths);
@@ -184,15 +184,15 @@ public class PcbParser {
 	  //System.out.println("Max: "+widths.get(widths.size()-1));   // Last element
 	  //System.out.println("Min: "+widths.get(0));
       if(widths.get(widths.size()-1) == widths.get(0)){
-        modules.componentWidth = widths.get(0);
+        modules.setComponentWidth(widths.get(0));
       }
       else
-        modules.componentWidth = widths.get(widths.size()-1) - widths.get(0);
+        modules.setComponentWidth(widths.get(widths.size()-1) - widths.get(0));
       if(heights.get(heights.size()-1) == heights.get(0)){
-        modules.componentHeight = heights.get(0);
+        modules.setComponentHeight(heights.get(0));
       }
       else
-        modules.componentHeight = heights.get(heights.size()-1) - heights.get(0);		
+        modules.setComponentHeight(heights.get(heights.size()-1) - heights.get(0));		
       moduleList.add(modules);
       READFLAG=1;
 	}catch (Exception e) {

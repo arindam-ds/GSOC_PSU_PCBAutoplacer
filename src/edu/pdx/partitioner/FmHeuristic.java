@@ -209,18 +209,18 @@ public class FmHeuristic {
           break; //break from for-j
         if(netparser.netList.get(j).getNetId()==i){
           for(int k=0; k<pcbparser.moduleList.size(); k++){
-            if(netparser.netList.get(j).getCompName().equals(pcbparser.moduleList.get(k).moduleName)){
-              if(pcbparser.moduleList.get(k).positionX < minX){
-                minX = pcbparser.moduleList.get(k).positionX;
+            if(netparser.netList.get(j).getCompName().equals(pcbparser.moduleList.get(k).getModuleName())){
+              if(pcbparser.moduleList.get(k).getPositionX() < minX){
+                minX = pcbparser.moduleList.get(k).getPositionX();
               }
-              if(pcbparser.moduleList.get(k).positionX > maxX){
-                maxX = pcbparser.moduleList.get(k).positionX;
+              if(pcbparser.moduleList.get(k).getPositionX() > maxX){
+                maxX = pcbparser.moduleList.get(k).getPositionX();
               }
-              if(pcbparser.moduleList.get(k).positionY < minY){
-                minY = pcbparser.moduleList.get(k).positionY;
+              if(pcbparser.moduleList.get(k).getPositionY() < minY){
+                minY = pcbparser.moduleList.get(k).getPositionY();
               }
-              if(pcbparser.moduleList.get(k).positionY > maxY){
-                maxY = pcbparser.moduleList.get(k).positionY;
+              if(pcbparser.moduleList.get(k).getPositionY() > maxY){
+                maxY = pcbparser.moduleList.get(k).getPositionY();
               }
               break; //break from for-k
             }
